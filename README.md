@@ -19,4 +19,6 @@ Web app for tracking/rating games played
   - User can also manually remove games from wishlist
 - User
   - User should be properly authenticated when logged in
+- API
+  - Web app will utilize `https://www.igdb.com/api` for gathering information about games that are played or added to wishlist 
     
