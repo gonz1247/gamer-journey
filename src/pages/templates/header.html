@@ -1,0 +1,17 @@
+<header>
+    <!-- TODO: Add in a header for the webpage -->
+    <h1>Gamer Journey</h1>
+    <nav>
+        <p>
+            <!-- TODO: Add in way to check if a user is logged in or not -->
+            <a href="/">Home</a>,
+            {% if not patron %}
+                <a href="/login">Login</a>,
+                <a href="/create-user">Create An Account</a>,
+            {% else %}
+                <a href="/profile">{{ patron }}</a>,
+            {% endif %}
+            <a href="/about">About</a>
+        </p>
+    </nav>
+</header>

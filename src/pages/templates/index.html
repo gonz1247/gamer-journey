@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% load static %}
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="author" content="Gonzo">
-    <meta name="description" content="This is the landing page for the gamer-journey web app">
-    <title>Gamer-Journey</title>
-    <link rel="stylesheet" href="{% static 'main.css' %}" type="text/css">
-</head>
+{% include "head.html" %}
 
 <body>
-    <header>
-        <!-- TODO: Add in a header for the webpage -->
-        <h1>Gamer Journey</h1>
-    </header>
+    {% include "header.html" %}
 
     <hr>
 
     <main>
         <!-- TODO: Add in a content index page -->
+        <!-- TODO: Add in way to check if a user is logged in or not -->
+        {% if patron %}
+            <h2>Welcome, {{ patron }}</h2>
+            <p>Choose what you would like to do today</p>
+            <details>
+                <summary>Diary</summary>
+                <ol>
+                    <li><a href="/diary/add">Add Game To Diary</a></li>
+                    <li><a href="/diary/edit">Edit Diary</a></li>
+                    <li><a href="/diary/view">View Diary</a></li>
+                </ol>
+            </details>
+            <details>
+                <summary>Wishlist</summary>
+                <ol>
+                    <li><a href="/wishlist/add">Add Game To Wishlist</a></li>
+                    <li><a href="/wishlist/edit">Edit Wishlist</a></li>
+                    <li><a href="/wishlist/view">View Wishlist</a></li>
+                </ol>
+            </details>
+        {% else %}
+            <h2>Welcome to the Gamer Journey web app!</h2>
+        {% endif %}
     </main>
 
     <hr>
 
-    <footer>
-        <!-- TODO: Add a footer for the webpage -->
-    </footer>
+    {% include 'footer.html' %}
 
 </body>
 
