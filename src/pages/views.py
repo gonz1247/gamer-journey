@@ -5,7 +5,7 @@ from django.shortcuts import render
 def index_view(request):
     context = {}
     # TODO: Add logic for logged in users to get page with options, if not get generic welcome page
-    #context = {'patron':'Gonzo'}
+    context = {'patron':'Gonzo'}
     return render(request, "index.html", context)
 
 def credits_view(request):
