@@ -12,8 +12,14 @@
         <!-- TODO: Add in a content index page -->
         <!-- TODO: Add in way to check if a user is logged in or not -->
         {% if patron %}
-            <h2>Welcome, {{ patron }}</h2>
+            <h2>Welcome, {{ patron }}!</h2>
             <p>Choose what you would like to do today</p>
+            <details>
+                <summary>Game Search</summary>
+                <ol>
+                    <li><a href="/game">Search</a></li>
+                </ol>
+            </details>
             <details>
                 <summary>Diary</summary>
                 <ol>

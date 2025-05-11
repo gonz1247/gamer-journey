@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "head.html" %}
+
+<body>
+    {% include "header.html" %}
+
+    <hr>
+
+    <main>
+        <form action="." method="POST">
+            {% csrf_token %}
+            <input type="text" name="title" id="title" placeholder="Game Title" required>
+            <button type="submit">Find Game</button>
+        </form>
+        {% if games %}
+            <form action="/game/add" method="POST">
+                <fieldset>
+                    <legend>Select Game</legend>
+                    <dl>
+                    {% for game in games %}
+                            <dt>
+                               <input type="radio" name="game-id" id="{{ game.id }}" value="{{ game.id }}" required>
+                                <label for="{{ game.id }}">{{ game.name }}</label>
+                            </dt>
+                            <dd>
+                                <a href="{{ game.url }}" target="_blank">
+                                    <img src="{{ game.cover }}" alt="{{ game.name }} Cover Art" width="100">
+                                </a>
+                            </dd>
+                    {% endfor %}
+                    </dl>
+                    <button type="submit" formaction="/diary/add" formmethod="post">Add Game To Diary</button>
+                    <button type="submit" formaction="/wishlist/add" formmethod="post">Add Game To Wishlist</button>
+                    <!-- <button type="submit" formaction="https://httpbin.org/post" formmethod="post">Post</button> -->
+                </fieldset>
+            </form>
+        {% elif no_results %}
+            <p>No Results Were Returned For That Search Request</p>
+        {% endif %}
+    </main>
+
+    <hr>
+
+    {% include 'footer.html' %}
+
+</body>
+
+</html>

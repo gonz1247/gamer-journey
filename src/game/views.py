@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import requests
 from dotenv import dotenv_values
+import json
 
 CONFIG_ENV = dotenv_values('.env')
 AUTHENTICATOR_URL = 'https://id.twitch.tv/oauth2/token?client_id={}&client_secret={}&grant_type=client_credentials'
@@ -8,17 +9,31 @@ AUTHENTICATOR_URL = 'https://id.twitch.tv/oauth2/token?client_id={}&client_secre
 API_URL = 'https://api.igdb.com/v4/games'
 
 # Create your views here.
-def add_game_view(request):
-    if request.method == 'POST':
-        r_1 = requests.post(
-            AUTHENTICATOR_URL.format(CONFIG_ENV['client_id'], CONFIG_ENV['client_secret'])).json()
-        print(r_1)
-        r_2 = requests.post(API_URL, headers={
-                                        'Client-ID':CONFIG_ENV['client_id'],
-                                        'Authorization':('Bearer ' + r_1['access_token']),}).json()
-                                        #'Body': '"fields name; limit 5"'}).json()
-        print(r_2)
-
+def search_view(request):
     context = {}
-    return render(request,'new_game.html',context)
+    if request.method == 'POST': # Search has been initiated
+        # extract info from POST
+        title = request.POST['title']
+        # Set up credentials for using the API
+        access_token = requests.post(
+            AUTHENTICATOR_URL.format(CONFIG_ENV['client_id'], CONFIG_ENV['client_secret'])).json()['access_token']
+        auth = {'Client-ID':CONFIG_ENV['client_id'],
+                   'Authorization':('Bearer ' + access_token) }
+        # Search for inputted title
+        query = f'fields name,cover.*,url; search "{title}"; where version_parent = null; limit 15;'
+        results = requests.post(API_URL, headers=auth,data=query).json()
+        if len(results) > 0:
+            # Grab picture of resulting games
+            for game in results:
+                if game.get('cover'):
+                    game['cover'] = game['cover']['url']
+                else:
+                    game['cover'] = None
+            context = {'games': results}
+        else:
+            context = {'no_results':True}
+
+
+    context['patron'] = "Gonzo"
+    return render(request,'search_game.html',context)
 

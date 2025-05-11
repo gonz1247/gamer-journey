@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import add_game_view
+from .views import search_view
 
 urlpatterns = [
-    path('',add_game_view),
+    path('',search_view),
 ]
