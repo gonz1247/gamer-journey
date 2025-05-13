@@ -21,12 +21,12 @@
                     <dl>
                     {% for game in games %}
                             <dt>
-                               <input type="radio" name="game_id" id="{{ game.id }}" value="{{ game.id }}" required>
-                                <label for="{{ game.id }}">{{ game.name }}</label>
+                               <input type="radio" name="game_id" id="{{ game.game_id }}" value="{{ game.game_id }}" required>
+                                <label for="{{ game.game_id }}">{{ game.title }}</label>
                             </dt>
                             <dd>
                                 <a href="{{ game.url }}" target="_blank">
-                                    <img src="{{ game.cover }}" alt="{{ game.name }} Cover Art" width="100">
+                                    <img src="{{ game.cover_art }}" alt="{{ game.title }} Cover Art" width="100">
                                 </a>
                             </dd>
                     {% endfor %}

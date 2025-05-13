@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Game
+from .models import Game, Genre,Theme
 
 
 # Create your views here.
@@ -24,5 +24,17 @@ def game_add(request):
     if request.method == 'GET':
         game_id = request.GET['game_id']
         game_info = Game.game_id_search(game_id)
+        # temp add in
+        game = Game.objects.create(**game_info)
+        game_info = game.self_search()
+        for genre_type in game_info['genres']:
+            genre = Genre.objects.create(type=genre_type)
+            game.genres.add(genre)
+        for theme_type in game_info['themes']:
+            theme = Theme.objects.create(type=theme_type)
+            game.themes.add(theme)
+        game.save()
+
+
     return render(request, 'search_game.html', context)
 

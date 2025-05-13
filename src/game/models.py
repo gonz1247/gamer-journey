@@ -10,18 +10,18 @@ GAMES_END_POINT = 'https://api.igdb.com/v4/games'
 # Create your models here.
 
 class Genre(models.Model):
-    name = models.CharField(max_length=25)
+    type = models.CharField(max_length=25)
 
 class Theme(models.Model):
     type = models.CharField(max_length=25)
 
 
 class Game(models.Model):
-    game_id = models.CharField(max_length=10)
-    title = models.CharField(max_length=100)
-    url = models.CharField(max_length=100)
-    cover_art = models.CharField(max_length=100)
-    genre = models.ManyToManyField(Genre)
+    game_id = models.IntegerField(blank=True, null=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    url = models.CharField(max_length=100, blank=True, null=True)
+    cover_art = models.CharField(max_length=100, blank=True, null=True)
+    genres = models.ManyToManyField(Genre)
     themes = models.ManyToManyField(Theme)
 
     @staticmethod
@@ -40,8 +40,11 @@ class Game(models.Model):
             # Explicitly send back None
             return None
 
+    def self_search(self,fields='name,cover.*,url,genres.*,themes.*'):
+        return self.game_id_search(self.game_id,fields)
+
     @staticmethod
-    def game_id_search(game_id, fields='name,cover.*,url,genres.*,themes.*'):
+    def game_id_search(game_id, fields='name,cover.*,url'):
         # get access token and set up header for request
         access_token = Game._get_access_token()
         auth = {'Client-ID': CONFIG_ENV['client_id'],
@@ -51,7 +54,8 @@ class Game(models.Model):
         results = requests.post(GAMES_END_POINT, headers=auth, data=query).json()
         # check if results came back
         assert len(results) == 1, 'Invalid game_id'
-        return Game._format_search(results)
+        game_info = Game._format_search(results)
+        return game_info[0]
 
     @staticmethod
     def _get_access_token():
@@ -72,9 +76,21 @@ class Game(models.Model):
                         game[key] = all_instances
                     else: #it is a dict
                          game[key] = game[key][value]
-                else:
-                    game[key] = None
+
+        query_results = Game._rename_fields(query_results)
+
         return query_results
+
+    @staticmethod
+    def _rename_fields(query_results):
+        rename_fields = {'id': 'game_id', 'name': 'title', 'cover': 'cover_art'}
+        for game in query_results:
+            for old_key, new_key in rename_fields.items():
+                if game.get(old_key):
+                    game[new_key] = game.pop(old_key)
+        return query_results
+
+
 
 
 
