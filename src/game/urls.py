@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import search_view
+from .views import search_view, game_add
 
 urlpatterns = [
     path('',search_view),
+    path('add/',game_add),
+    #/game/add/23733/
 ]

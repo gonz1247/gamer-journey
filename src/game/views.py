@@ -9,7 +9,7 @@ def search_view(request):
         # extract info from POST
         title = request.POST['title']
         # search for title
-        results = Game.game_search(title)
+        results = Game.title_search(title)
         # show results that come back
         if results:
             # Grab picture of resulting games
@@ -24,4 +24,12 @@ def search_view(request):
 
     context['patron'] = "Gonzo"
     return render(request,'search_game.html',context)
+
+def game_add(request):
+    context = {}
+    if request.method == 'GET':
+        game_id = request.GET['game_id']
+        game_info = Game.game_id_search(game_id)
+        print(game_info)
+    return render(request, 'search_game.html', context)
 

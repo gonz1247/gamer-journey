@@ -12,12 +12,12 @@ class Game(models.Model):
     title = models.CharField(max_length=100)
     url = models.CharField(max_length=100)
     cover_art = models.CharField(max_length=100)
-    publisher = models.CharField(max_length=100)
-    genre = models.CharField(max_length=100)
-    themes = models.CharField(max_length=100)
+    #developers = models.CharField(max_length=100)
+    #genre = models.ManyToManyField(Genre)
+    #themes = models.ManyToManyField(Theme)
 
     @staticmethod
-    def game_search(title, fields='name,cover.*,url', limit=10):
+    def title_search(title, fields='name,cover.*,url', limit=10):
         # get access token and set up header for request
         access_token = Game._get_access_token()
         auth = {'Client-ID': CONFIG_ENV['client_id'],
@@ -33,10 +33,29 @@ class Game(models.Model):
             return None
 
     @staticmethod
+    def game_id_search(game_id, fields='name,cover.*,url,genres.*,themes.*,involved_companies.*'):
+        # get access token and set up header for request
+        access_token = Game._get_access_token()
+        auth = {'Client-ID': CONFIG_ENV['client_id'],
+                'Authorization': ('Bearer ' + access_token)}
+        # Search for inputted title
+        query = f'fields {fields}; where id={game_id};'
+        results = requests.post(GAMES_END_POINT, headers=auth, data=query).json()
+        # check if results came back
+        assert len(results) == 1, 'Invalid game_id'
+        return results
+
+    @staticmethod
     def _get_access_token():
         access_token = requests.post(
             AUTHENTICATOR_URL.format(CONFIG_ENV['client_id'], CONFIG_ENV['client_secret'])).json()['access_token']
         return access_token
+
+class Genre(models.Model):
+    name = models.CharField(max_length=25)
+
+class Theme(models.Model):
+    type = models.CharField(max_length=25)
 
 
 

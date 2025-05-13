@@ -15,13 +15,13 @@
             <button type="submit">Find Game</button>
         </form>
         {% if games %}
-            <form action="/game/add" method="POST">
+            <form action="/game/add" method="GET">
                 <fieldset>
                     <legend>Select Game</legend>
                     <dl>
                     {% for game in games %}
                             <dt>
-                               <input type="radio" name="game-id" id="{{ game.id }}" value="{{ game.id }}" required>
+                               <input type="radio" name="game_id" id="{{ game.id }}" value="{{ game.id }}" required>
                                 <label for="{{ game.id }}">{{ game.name }}</label>
                             </dt>
                             <dd>
@@ -31,9 +31,9 @@
                             </dd>
                     {% endfor %}
                     </dl>
-                    <button type="submit" formaction="/diary/add" formmethod="post">Add Game To Diary</button>
-                    <button type="submit" formaction="/wishlist/add" formmethod="post">Add Game To Wishlist</button>
-                    <!-- <button type="submit" formaction="https://httpbin.org/post" formmethod="post">Post</button> -->
+                    <button type="submit" formaction="/diary/add" formmethod="get">Add Game To Diary</button>
+                    <button type="submit" formaction="/game/add/" formmethod="get">Add Game To Wishlist</button>
+                    <button type="submit" formaction="https://httpbin.org/get" formmethod="get">Get</button>
                 </fieldset>
             </form>
         {% elif no_results %}
