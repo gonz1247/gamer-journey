@@ -12,12 +12,6 @@ def search_view(request):
         results = Game.title_search(title)
         # show results that come back
         if results:
-            # Grab picture of resulting games
-            for game in results:
-                if game.get('cover'):
-                    game['cover'] = game['cover']['url']
-                else:
-                    game['cover'] = None
             context = {'games': results}
         else:
             context = {'no_results':True}
@@ -30,6 +24,5 @@ def game_add(request):
     if request.method == 'GET':
         game_id = request.GET['game_id']
         game_info = Game.game_id_search(game_id)
-        print(game_info)
     return render(request, 'search_game.html', context)
 

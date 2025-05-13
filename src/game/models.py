@@ -1,3 +1,4 @@
+from charset_normalizer.cli import query_yes_no
 from django.db import models
 from dotenv import dotenv_values
 import requests
@@ -7,14 +8,21 @@ AUTHENTICATOR_URL = 'https://id.twitch.tv/oauth2/token?client_id={}&client_secre
 GAMES_END_POINT = 'https://api.igdb.com/v4/games'
 
 # Create your models here.
+
+class Genre(models.Model):
+    name = models.CharField(max_length=25)
+
+class Theme(models.Model):
+    type = models.CharField(max_length=25)
+
+
 class Game(models.Model):
     game_id = models.CharField(max_length=10)
     title = models.CharField(max_length=100)
     url = models.CharField(max_length=100)
     cover_art = models.CharField(max_length=100)
-    #developers = models.CharField(max_length=100)
-    #genre = models.ManyToManyField(Genre)
-    #themes = models.ManyToManyField(Theme)
+    genre = models.ManyToManyField(Genre)
+    themes = models.ManyToManyField(Theme)
 
     @staticmethod
     def title_search(title, fields='name,cover.*,url', limit=10):
@@ -27,13 +35,13 @@ class Game(models.Model):
         results = requests.post(GAMES_END_POINT, headers=auth, data=query).json()
         # check if results came back
         if len(results) > 0:
-            return results
+            return Game._format_search(results)
         else:
             # Explicitly send back None
             return None
 
     @staticmethod
-    def game_id_search(game_id, fields='name,cover.*,url,genres.*,themes.*,involved_companies.*'):
+    def game_id_search(game_id, fields='name,cover.*,url,genres.*,themes.*'):
         # get access token and set up header for request
         access_token = Game._get_access_token()
         auth = {'Client-ID': CONFIG_ENV['client_id'],
@@ -43,7 +51,7 @@ class Game(models.Model):
         results = requests.post(GAMES_END_POINT, headers=auth, data=query).json()
         # check if results came back
         assert len(results) == 1, 'Invalid game_id'
-        return results
+        return Game._format_search(results)
 
     @staticmethod
     def _get_access_token():
@@ -51,11 +59,24 @@ class Game(models.Model):
             AUTHENTICATOR_URL.format(CONFIG_ENV['client_id'], CONFIG_ENV['client_secret'])).json()['access_token']
         return access_token
 
-class Genre(models.Model):
-    name = models.CharField(max_length=25)
+    @staticmethod
+    def _format_search(query_results):
+        reformat_fields = {'cover':'url','genres':'name','themes':'name'}
+        for game in query_results:
+            for key, value in reformat_fields.items():
+                if game.get(key):
+                    if isinstance(game.get(key),list):
+                        all_instances = []
+                        for instance in game[key]:
+                            all_instances.append(instance[value])
+                        game[key] = all_instances
+                    else: #it is a dict
+                         game[key] = game[key][value]
+                else:
+                    game[key] = None
+        return query_results
 
-class Theme(models.Model):
-    type = models.CharField(max_length=25)
+
 
 
 
