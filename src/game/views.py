@@ -1,6 +1,6 @@
 import django.db
 from django.shortcuts import render, redirect
-from .models import Game, Genre,Theme
+from .models import Game, Genre, Theme
 
 
 # Create your views here.

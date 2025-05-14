@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # user defined apps
     'pages',
     'game',
+    'patron',
 ]
 
 MIDDLEWARE = [
