@@ -1,4 +1,5 @@
-from django.shortcuts import render
+import django.db
+from django.shortcuts import render, redirect
 from .models import Game, Genre,Theme
 
 
@@ -20,21 +21,29 @@ def search_view(request):
     return render(request,'search_game.html',context)
 
 def game_add(request):
-    context = {}
     if request.method == 'GET':
         game_id = request.GET['game_id']
-        game_info = Game.game_id_search(game_id)
-        # temp add in
-        game = Game.objects.create(**game_info)
-        game_info = game.self_search()
-        for genre_type in game_info['genres']:
-            genre = Genre.objects.create(type=genre_type)
-            game.genres.add(genre)
-        for theme_type in game_info['themes']:
-            theme = Theme.objects.create(type=theme_type)
-            game.themes.add(theme)
-        game.save()
+        try: # create game if not in DB
+            game_info = Game.game_id_search(game_id)
+            # temp add in
+            game = Game.objects.create(**game_info)
+            game_info = game.self_search()
+            for genre_type in game_info['genres']:
+                try:
+                    genre = Genre.objects.create(type=genre_type)
+                except django.db.IntegrityError: # grab instance of genre instead
+                    genre = Genre.objects.get(type=genre_type)
+                game.genres.add(genre)
+            for theme_type in game_info['themes']:
+                try:
+                    theme = Theme.objects.create(type=theme_type)
+                except django.db.IntegrityError: # grab instance of genre instead
+                    theme = Theme.objects.get(type=theme_type)
+                game.themes.add(theme)
+            game.save()
+            # alternatively could grab list of all game_id, genres, and themes but not sure if using try/except is just faster than searching through N instances
+        except django.db.IntegrityError: # grab instance of game instead
+            game = Game.objects.get(game_id=game_id)
+    return render(request, 'search_game.html',{})
 
-
-    return render(request, 'search_game.html', context)
 

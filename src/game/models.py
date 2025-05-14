@@ -10,17 +10,17 @@ GAMES_END_POINT = 'https://api.igdb.com/v4/games'
 # Create your models here.
 
 class Genre(models.Model):
-    type = models.CharField(max_length=25)
+    type = models.CharField(max_length=25, unique=True)
 
 class Theme(models.Model):
-    type = models.CharField(max_length=25)
+    type = models.CharField(max_length=25, unique=True)
 
 
 class Game(models.Model):
-    game_id = models.IntegerField(blank=True, null=True)
-    title = models.CharField(max_length=100, blank=True, null=True)
-    url = models.CharField(max_length=100, blank=True, null=True)
-    cover_art = models.CharField(max_length=100, blank=True, null=True)
+    game_id = models.IntegerField(unique=True)
+    title = models.CharField(max_length=100)
+    url = models.CharField(max_length=100)
+    cover_art = models.CharField(max_length=100, blank=True)
     genres = models.ManyToManyField(Genre)
     themes = models.ManyToManyField(Theme)
 
