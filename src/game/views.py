@@ -17,7 +17,6 @@ def search_view(request):
         else:
             context = {'no_results':True}
 
-    context['patron'] = "Gonzo"
     return render(request,'search_game.html',context)
 
 def game_add(request):

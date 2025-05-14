@@ -5,11 +5,11 @@
         <p>
             <!-- TODO: Add in way to check if a user is logged in or not -->
             <a href="/">Home</a>,
-            {% if not patron %}
+            {% if not user.is_authenticated %}
                 <a href="/login">Login</a>,
-                <a href="/create-user">Create An Account</a>,
+                <a href="/profile/register">Create An Account</a>,
             {% else %}
-                <a href="/profile">{{ patron }}</a>,
+                <a href="/profile">{{ user.username }}</a>,
             {% endif %}
             <a href="/about">About</a>
         </p>
