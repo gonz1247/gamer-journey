@@ -17,7 +17,7 @@ def search_view(request):
         else:
             context = {'no_results':True}
 
-    return render(request,'search_game.html',context)
+    return render(request,'game/search_game.html',context)
 
 def game_add(request):
     if request.method == 'GET':
@@ -43,6 +43,6 @@ def game_add(request):
             # alternatively could grab list of all game_id, genres, and themes but not sure if using try/except is just faster than searching through N instances
         except django.db.IntegrityError: # grab instance of game instead
             game = Game.objects.get(game_id=game_id)
-    return render(request, 'search_game.html',{})
+    return render(request, 'game/search_game.html',{})
 
 

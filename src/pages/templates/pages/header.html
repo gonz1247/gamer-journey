@@ -3,7 +3,6 @@
     <h1>Gamer Journey</h1>
     <nav>
         <p>
-            <!-- TODO: Add in way to check if a user is logged in or not -->
             <a href="/">Home</a>,
             {% if not user.is_authenticated %}
                 <a href="/login">Login</a>,

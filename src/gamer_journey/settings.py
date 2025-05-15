@@ -58,7 +58,7 @@ ROOT_URLCONF = 'gamer_journey.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'pages/templates/pages'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

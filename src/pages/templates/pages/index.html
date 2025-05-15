@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block main-section %}
+<!-- TODO: Add in a content index page -->
+{% if user.is_authenticated %}
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p>Choose what you would like to do today</p>
+    <details>
+        <summary>Game Search</summary>
+        <ol>
+            <li><a href="/game">Search</a></li>
+        </ol>
+    </details>
+    <details>
+        <summary>Diary</summary>
+        <ol>
+            <li><a href="/diary/add">Add Game To Diary</a></li>
+            <li><a href="/diary/edit">Edit Diary</a></li>
+            <li><a href="/diary/view">View Diary</a></li>
+        </ol>
+    </details>
+    <details>
+        <summary>Wishlist</summary>
+        <ol>
+            <li><a href="/wishlist/add">Add Game To Wishlist</a></li>
+            <li><a href="/wishlist/edit">Edit Wishlist</a></li>
+            <li><a href="/wishlist/view">View Wishlist</a></li>
+        </ol>
+    </details>
+{% else %}
+    <h2>Welcome to the Gamer Journey web app!</h2>
+{% endif %}
+{% endblock  %}

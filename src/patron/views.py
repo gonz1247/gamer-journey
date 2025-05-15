@@ -21,4 +21,4 @@ def register_view(request):
     context = {
         'form': form
     }
-    return render(request, "register.html", context)
+    return render(request, "patron/register.html", context)

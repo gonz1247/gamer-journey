@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block main-section %}
+<main>
+    <form action="." method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" id="title" placeholder="Game Title" required>
+        <button type="submit">Find Game</button>
+    </form>
+    {% if games %}
+        <form>
+            <fieldset>
+                <legend>Select Game</legend>
+                <dl>
+                {% for game in games %}
+                        <dt>
+                           <input type="radio" name="game_id" id="{{ game.game_id }}" value="{{ game.game_id }}" required>
+                            <label for="{{ game.game_id }}">{{ game.title }}</label>
+                        </dt>
+                        <dd>
+                            <a href="{{ game.url }}" target="_blank">
+                                <img src="{{ game.cover_art }}" alt="{{ game.title }} Cover Art" width="100">
+                            </a>
+                        </dd>
+                {% endfor %}
+                </dl>
+                <button type="submit" formaction="/diary/add" formmethod="get">Add Game To Diary</button>
+                <button type="submit" formaction="/wishlist/" formmethod="post">Add Game To Wishlist</button>
+                <button type="submit" formaction="https://httpbin.org/get" formmethod="get">Get</button>
+            </fieldset>
+        </form>
+    {% elif no_results %}
+        <p>No Results Were Returned For That Search Request</p>
+    {% endif %}
+</main>
+{% endblock %}
