@@ -1,6 +1,6 @@
 import django.db
 from django.shortcuts import render, redirect
-from .models import Game, Genre, Theme
+from .models import Game, Genre, Theme, Platform
 
 
 # Create your views here.
@@ -20,8 +20,8 @@ def search_view(request):
     return render(request,'game/search_game.html',context)
 
 def game_add(request):
-    if request.method == 'GET':
-        game_id = request.GET['game_id']
+    if request.method == 'POST':
+        game_id = request.POST['game_id']
         try: # create game if not in DB
             game_info = Game.game_id_search(game_id)
             # temp add in
@@ -39,6 +39,12 @@ def game_add(request):
                 except django.db.IntegrityError: # grab instance of genre instead
                     theme = Theme.objects.get(type=theme_type)
                 game.themes.add(theme)
+            for platform_device in game_info['platforms']:
+                try:
+                    platform = Platform.objects.create(device=platform_device)
+                except django.db.IntegrityError: # grab instance of genre instead
+                    platform = Platform.objects.get(device=platform_device)
+                game.platforms.add(platform)
             game.save()
             # alternatively could grab list of all game_id, genres, and themes but not sure if using try/except is just faster than searching through N instances
         except django.db.IntegrityError: # grab instance of game instead

@@ -21,5 +21,4 @@ from .views import search_view, game_add
 urlpatterns = [
     path('',search_view),
     path('add/',game_add),
-    #/game/add/23733/
 ]

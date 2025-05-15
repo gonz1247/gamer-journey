@@ -15,6 +15,9 @@ class Genre(models.Model):
 class Theme(models.Model):
     type = models.CharField(max_length=25, unique=True)
 
+class Platform(models.Model):
+    device = models.CharField(max_length=25, unique=True)
+
 
 class Game(models.Model):
     game_id = models.IntegerField(unique=True)
@@ -23,6 +26,7 @@ class Game(models.Model):
     cover_art = models.CharField(max_length=100, blank=True)
     genres = models.ManyToManyField(Genre)
     themes = models.ManyToManyField(Theme)
+    platforms = models.ManyToManyField(Platform)
 
     @staticmethod
     def title_search(title, fields='name,cover.*,url', limit=10):
@@ -40,7 +44,7 @@ class Game(models.Model):
             # Explicitly send back None
             return None
 
-    def self_search(self,fields='name,cover.*,url,genres.*,themes.*'):
+    def self_search(self,fields='name,cover.*,url,genres.*,themes.*,platforms.*'):
         return self.game_id_search(self.game_id,fields)
 
     @staticmethod
@@ -65,7 +69,7 @@ class Game(models.Model):
 
     @staticmethod
     def _format_search(query_results):
-        reformat_fields = {'cover':'url','genres':'name','themes':'name'}
+        reformat_fields = {'cover':'url','genres':'name','themes':'name','platforms':'name'}
         for game in query_results:
             for key, value in reformat_fields.items():
                 if game.get(key):

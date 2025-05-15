@@ -5,12 +5,12 @@ from django.contrib.auth.models import User
 
 class PatronRegisterForm(UserCreationForm):
     PLATFORM_CHOICES = [
-        ('ps4', 'PS4'),
-        ('ps5', 'PS5'),
-        ('xbox-x', 'XBOX Series X'),
-        ('xbox-s', 'XBOX Series S'),
+        ('ps4', 'PlayStation 5'),
+        ('ps5', 'PlayStation 5'),
+        ('xbox-xs', 'XBOX Series X|S'),
+        ('xbox-one', 'Xbox One'),
         ('switch', 'Nintendo Switch'),
-        ('steam', 'Steam'),
+        ('pc', 'PC / Steam'),
     ]
     fav_platform = forms.ChoiceField(label='Preferred Platform', choices=PLATFORM_CHOICES)
     class Meta:
