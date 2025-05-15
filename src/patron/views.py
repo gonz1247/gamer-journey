@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 
 from .forms import PatronRegisterForm
+from game.models import Game
 
 def register_view(request):
     error_message = None
@@ -50,8 +51,9 @@ def wishlist_view(request):
     user = request.user
     if user.is_authenticated:
         if request.method == "POST":
-            # ADD GAME
-            pass
+            game_id = request.POST['game_id']
+            game = Game.add_or_grab_game(game_id)
+            user.patron.wishlist.add(game)
         current_wishlist = user.patron.wishlist.all()
         context = {'wishlist':current_wishlist}
         return render(request, 'patron/wishlist.html', context)

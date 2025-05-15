@@ -4,7 +4,11 @@
 <main>
     <form action="." method="POST">
         {% csrf_token %}
+        {% if searched_title %}
+        <input type="text" name="title" id="title" value="{{ searched_title }}" required>
+        {% else %}
         <input type="text" name="title" id="title" placeholder="Game Title" required>
+        {% endif %}
         <button type="submit">Find Game</button>
     </form>
     {% if games %}
@@ -26,7 +30,7 @@
                 {% endfor %}
                 </dl>
                 <button type="submit" formaction="/diary/add/" formmethod="get">Add Game To Diary</button>
-                <button type="submit" formaction="/game/add/" formmethod="post">Add Game To Wishlist</button>
+                <button type="submit" formaction="/profile/wishlist/" formmethod="post">Add Game To Wishlist</button>
                 <button type="submit" formaction="https://httpbin.org/get" formmethod="get">Get</button>
             </fieldset>
         </form>

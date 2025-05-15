@@ -13,7 +13,8 @@ def search_view(request):
         results = Game.title_search(title)
         # show results that come back
         if results:
-            context = {'games': results}
+            context = {'games': results,
+                       'searched_title':title}
         else:
             context = {'no_results':True}
 
