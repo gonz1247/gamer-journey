@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
+{% if error %}
+    <dl style="color: red">Could not create user.</dl>
+    {% for message in error %}
+    <dd style="color: red">{{ message }}</dd>
+    {% endfor %}
+{% endif %}
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

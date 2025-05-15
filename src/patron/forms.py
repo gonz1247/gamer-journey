@@ -15,9 +15,7 @@ class PatronRegisterForm(UserCreationForm):
     fav_platform = forms.ChoiceField(label='Preferred Platform', choices=PLATFORM_CHOICES)
     class Meta:
         model = User
-        fields = UserCreationForm.Meta.fields + (
-            'fav_platform',
-        )
+        fields = UserCreationForm.Meta.fields + ('fav_platform',)
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=True)
