@@ -22,33 +22,8 @@ def search_view(request):
 def game_add(request):
     if request.method == 'POST':
         game_id = request.POST['game_id']
-        try: # create game if not in DB
-            game_info = Game.game_id_search(game_id)
-            # temp add in
-            game = Game.objects.create(**game_info)
-            game_info = game.self_search()
-            for genre_type in game_info['genres']:
-                try:
-                    genre = Genre.objects.create(type=genre_type)
-                except django.db.IntegrityError: # grab instance of genre instead
-                    genre = Genre.objects.get(type=genre_type)
-                game.genres.add(genre)
-            for theme_type in game_info['themes']:
-                try:
-                    theme = Theme.objects.create(type=theme_type)
-                except django.db.IntegrityError: # grab instance of genre instead
-                    theme = Theme.objects.get(type=theme_type)
-                game.themes.add(theme)
-            for platform_device in game_info['platforms']:
-                try:
-                    platform = Platform.objects.create(device=platform_device)
-                except django.db.IntegrityError: # grab instance of genre instead
-                    platform = Platform.objects.get(device=platform_device)
-                game.platforms.add(platform)
-            game.save()
-            # alternatively could grab list of all game_id, genres, and themes but not sure if using try/except is just faster than searching through N instances
-        except django.db.IntegrityError: # grab instance of game instead
-            game = Game.objects.get(game_id=game_id)
+        game = Game.add_or_grab_game(game_id)
+        print(game.title)
     return render(request, 'game/search_game.html',{})
 
 
