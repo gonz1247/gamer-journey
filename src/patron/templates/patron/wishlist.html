@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block main-section %}
+{% for game in wishlist %}
+    <p>{{ game.title }}</p>
+{% empty %}
+    <p>No Games Have Been Added To Your Wishlist Yet!</p>
+{% endfor %}
+
+{% endblock %}

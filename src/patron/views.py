@@ -45,3 +45,17 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return render(request, "patron/logout_success.html", {})
+
+def wishlist_view(request):
+    user = request.user
+    if user.is_authenticated:
+        if request.method == "POST":
+            # ADD GAME
+            pass
+        current_wishlist = user.patron.wishlist.all()
+        context = {'wishlist':current_wishlist}
+        return render(request, 'patron/wishlist.html', context)
+    else:
+        # change this to go to an error page
+        return redirect("home")
+
