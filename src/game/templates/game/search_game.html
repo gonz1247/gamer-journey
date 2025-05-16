@@ -11,6 +11,7 @@
         {% endif %}
         <button type="submit">Find Game</button>
     </form>
+    {{ confirm_message }}
     {% if games %}
         <form>
             {% csrf_token %}
@@ -31,7 +32,7 @@
                 {% endfor %}
                 </dl>
                 <button type="submit" formaction="/diary/add/" formmethod="get">Add Game To Diary</button>
-                <button type="submit" formaction="/profile/wishlist/" formmethod="post">Add Game To Wishlist</button>
+                <button type="submit" formaction="." formmethod="post">Add Game To Wishlist</button>
             </fieldset>
         </form>
     {% elif no_results %}
