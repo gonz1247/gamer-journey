@@ -21,7 +21,6 @@ from pages.views import index_view, credits_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index_view, name='home'),
-    path('home/', index_view),
     path('credits/', credits_view),
     path('game/',include('game.urls')),
     path('profile/',include('patron.urls'))
