@@ -1,10 +1,38 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
-{% for game in wishlist %}
-    <p>{{ game.title }}</p>
-{% empty %}
-    <p>No Games Have Been Added To Your Wishlist Yet!</p>
-{% endfor %}
-
+<table>
+    <caption>{{ user.username|capfirst }}'s Wishlist</caption>
+    <thead>
+        <tr>
+            <th>Cover Art</th>
+            <th>Game Title</th>
+            <th>Platforms</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for game in wishlist reversed %}
+        <tr>
+            <th><img src="{{ game.cover_art}}" alt="Game Cover Art"></th>
+            <th>{{ game.title }}</th>
+            <th>
+                {% for platform in game.platforms.all %}
+                {{ platform.device }}
+                <br>
+                {% endfor %}
+            </th>
+            <th>
+                <form action="." method="post">
+                    {% csrf_token %}
+                     <input type="hidden" id="wishlist_id" name="wishlist_id" value="{{ game.id }}">
+                    <button type="submit">Remove From Wishlist</button>
+                </form>
+            </th>
+        </tr>
+    {% empty %}
+        <tr><th colspan="4">No Games Have Been Added To Your Wishlist Yet!</th></tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
