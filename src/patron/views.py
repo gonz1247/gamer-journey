@@ -19,8 +19,11 @@ def register_view(request):
         else:
             error_message = []
             for [error] in form.errors.values():
-                error_message.append(error) # = error_message + error + ' '
+                error_message.append(error)
     form = PatronRegisterForm()
+    # Need to manually remove help text after form has been initialized, only way I got it to work
+    form.fields['password1'].help_text = None
+    form.fields['password2'].help_text = None
     context = {
         'form': form,
         'error': error_message,
