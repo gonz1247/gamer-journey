@@ -18,8 +18,8 @@
             <th>{{ game.title }}</th>
             <th>
                 {% for platform in game.platforms.all %}
-                {{ platform.device }}
-                <br>
+                    {{ platform.device }}
+                    <br>
                 {% endfor %}
             </th>
             <th>
