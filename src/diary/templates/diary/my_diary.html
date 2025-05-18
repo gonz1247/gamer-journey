@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block main-section %}
+<table>
+    <caption>{{ user.username }}'s Diary</caption>
+    <thead>
+        <tr>
+            <th>Cover Art</th>
+            <th>Game Title</th>
+            <th>PLatform</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entry in diary reversed %}
+        <tr>
+            <th><img src="{{ entry.game.cover_art}}" alt="Game Cover Art"></th>
+            <th>{{ entry.game.title }}</th>
+            <th>
+                {{ entry.platform.device }}
+            </th>
+            <th>
+                <form action="." method="post">
+                    {% csrf_token %}
+                     <input type="hidden" id="entry_id" name="entry_id" value="{{ entry.id }}">
+                    <button type="submit">Remove From Diary</button>
+                </form>
+            </th>
+        </tr>
+    {% empty %}
+        <tr><th colspan="4">No Games Have Been Added To Your Diary Yet!</th></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -17,7 +17,7 @@ class DiaryEntryForm(forms.ModelForm):
     patron = forms.IntegerField(widget=forms.HiddenInput)
     class Meta:
         model = DiaryEntry
-        fields = ('review', 'rating', 'platform', 'completed_date', 'completion_status', 'hours', 'game', 'patron')
+        fields = ('review', 'platform', 'rating', 'completed_date', 'completion_status', 'hours', 'game', 'patron')
 
 
     def clean_platform(self):

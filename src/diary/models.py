@@ -3,7 +3,6 @@ from django.db import models
 from game.models import Game, Platform
 from patron.models import Patron
 
-
 # Create your models here.
 class DiaryEntry(models.Model):
     # owner of the diary
