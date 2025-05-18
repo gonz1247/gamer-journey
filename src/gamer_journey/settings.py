@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'pages',
     'game',
     'patron',
+    'diary',
 ]
 
 MIDDLEWARE = [
