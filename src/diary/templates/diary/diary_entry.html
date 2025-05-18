@@ -3,9 +3,9 @@
 {% block main-section %}
 <h2>{{ game.title }}</h2>
 <p>Review</p>
-<form method="post">
+<form action='.' method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Register</button>
+    <button type="submit">Add To My Diary</button>
 </form>
 {% endblock %}

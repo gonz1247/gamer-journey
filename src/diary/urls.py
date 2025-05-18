@@ -19,5 +19,5 @@ from django.urls import path, include
 from .views import diary_entry_view
 
 urlpatterns = [
-    path('add/<int:game_id>', diary_entry_view),
+    path('add/', diary_entry_view),
 ]
