@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import DiaryEntryForm
 from game.models import Game, Platform
@@ -111,3 +111,11 @@ def diary_delete_view(request, entry_id):
                 'game':game,
             }
             return render(request, 'diary/delete_confirmation.html', context)
+
+def diary_detailed_view(request, entry_id):
+    # grab diary entry, don't really care if it's that users or not
+    entry = get_object_or_404(DiaryEntry.objects.all(),pk=entry_id)
+    context = {
+        'entry':entry,
+    }
+    return render(request, 'diary/view_detailed.html', context)
