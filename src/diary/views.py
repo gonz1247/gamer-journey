@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 
 from .forms import DiaryEntryForm
-from game.models import Game
-from game.models import Platform
+from game.models import Game, Platform
+from .models import DiaryEntry
 
 # Create your views here.
 def diary_entry_view(request):
@@ -11,8 +11,10 @@ def diary_entry_view(request):
         if request.method == 'POST':
             # add game to diary
             form = DiaryEntryForm(request.POST)
-            # add in choice field since this is dynamically when first loading the diary add page
-            form.fields['platform'].choices = {request.POST['platform']:request.POST['platform']}
+            # add in choice fields again since this is generated dynamically when first loading the diary add page
+            game = Game.add_or_grab_game(request.POST['game']) # potential security concern since they can change the game they are adding midway (by changing HTML), but then it just adds a different game so not a big deal
+            platforms = {p.device: p.device for p in game.platforms.all()}
+            form.fields['platform'].choices = platforms
             if form.is_valid():
                 form.save()
                 return redirect('home')
@@ -48,5 +50,43 @@ def my_diary_view(request):
         return render(request, 'diary/my_diary.html', context)
     else:
         message = 'Must be signed in to view diary.'
-        context = {'error_message': message}  # change this to go to an error page
+        context = {'error_message': message}
+        return render(request, 'error.html', context)
+
+def diary_edit_view(request, entry_id):
+    user = request.user
+    if user.is_authenticated:
+        try:
+            # grab diary entry
+            entry = user.patron.diaryentry_set.get(pk=entry_id)
+            game = entry.game
+        except DiaryEntry.DoesNotExist:
+            message = "Cannot edit other patron's diary entries."
+            context = {'error_message': message}
+            return render(request, 'error.html', context)
+        if 'entry_id' in request.POST or request.method == 'GET': # user to manually type out URL is they really want
+            form = DiaryEntryForm(instance=entry)
+            # update platform choices that were done dynamically the first time
+            platforms = {p.device: p.device for p in game.platforms.all()}
+            form.fields['platform'].choices = platforms
+            # Add in intial data for fields that had their data structure type changed in cleaning
+            form.initial['platform'] = entry.platform.device
+            form.initial['game'] = entry.game.game_id
+            context = {
+                'form':form,
+                'game':game,
+            }
+            return render(request, 'diary/diary_entry.html', context)
+        elif request.method == 'POST': # entry has been updated if post, if get then just manually trying to come to page
+            form = DiaryEntryForm(request.POST, instance=entry)
+            # update platform choices that were done dynamically the first time
+            platforms = {p.device: p.device for p in game.platforms.all()}
+            form.fields['platform'].choices = platforms
+            if form.is_valid():
+                form.save()
+                # maybe need to add in some logic for if a form isn't valid, but not updating is an okay default
+        return redirect('diary')
+    else:
+        message = 'Must be signed in to add entries to your diary.'
+        context = {'error_message':message}
         return render(request, 'error.html', context)

@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import diary_entry_view, my_diary_view
+from .views import diary_entry_view, my_diary_view, diary_edit_view
 
 urlpatterns = [
-    path('', my_diary_view),
+    path('', my_diary_view, name='diary'),
     path('add/', diary_entry_view),
+    path('edit/<int:entry_id>/', diary_edit_view)
 ]

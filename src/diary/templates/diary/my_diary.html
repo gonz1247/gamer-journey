@@ -7,7 +7,7 @@
         <tr>
             <th>Cover Art</th>
             <th>Game Title</th>
-            <th>PLatform</th>
+            <th>Platform</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -23,7 +23,11 @@
                 <form action="." method="post">
                     {% csrf_token %}
                      <input type="hidden" id="entry_id" name="entry_id" value="{{ entry.id }}">
-                    <button type="submit">Remove From Diary</button>
+                    <button type="submit" formaction="view/{{ entry.id }}/">View Details</button>
+                    <br>
+                    <button type="submit" formaction="edit/{{ entry.id }}/">Edit Entry</button>
+                    <br>
+                    <button type="submit" formaction="delete/{{ entry.id }}/">Remove From Diary</button>
                 </form>
             </th>
         </tr>
