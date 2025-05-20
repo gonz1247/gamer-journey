@@ -17,6 +17,10 @@ def diary_entry_view(request):
             form.fields['platform'].choices = platforms
             if form.is_valid():
                 form.save()
+                # check to see if need to remove game from wishlist
+                if game in user.patron.wishlist.all():
+                    #remove game from wishlist
+                    user.patron.wishlist.remove(game)
                 return redirect('/diary/')
             else:
                 error_message = []
