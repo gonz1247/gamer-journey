@@ -121,18 +121,28 @@ def diary_detailed_view(request, entry_id):
     return render(request, 'diary/view_detailed.html', context)
 
 def game_reviews_view(request, game_id):
-    # grab all diary entries associated with this game
-    game = Game.objects.get(game_id=game_id)
-    entries = game.diaryentry_set.all()
-    total = 0
-    for n, entry in enumerate(entries):
-        total += entry.rating
-    review_stats = {}
-    review_stats['ave_rating'] = total / (n+1)
-    # Can add more stats later if I want
-    context = {
-        'entries': entries,
-        'game':game,
-        'review_stats':review_stats,
-    }
-    return render(request, 'diary/view_all_reviews.html', context)
+    try:
+        # grab all diary entries associated with this game
+        game = Game.objects.get(game_id=game_id)
+        entries = game.diaryentry_set.all()
+        assert len(entries)>0
+        total = 0
+        for n, entry in enumerate(entries):
+            total += entry.rating
+        review_stats = {}
+        review_stats['ave_rating'] = total / (n+1)
+        # Can add more stats later if I want
+        context = {
+            'entries': entries,
+            'game':game,
+            'review_stats':review_stats,
+        }
+        return render(request, 'diary/view_all_reviews.html', context)
+    except Game.DoesNotExist:
+        pass # to the error message
+    except AssertionError:
+        pass # to the error message
+    message = 'No reviews for this game yet.'
+    context = {'error_message': message}
+    return render(request, 'error.html', context)
+
