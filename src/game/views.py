@@ -16,7 +16,7 @@ def search_view(request):
                 context = {'confirm_message': (game.title + ' has been added to your wishlist!')}
             else:
                 message = 'Must be signed in add games to a wishlist.'
-                context = {'error_message': message}  # change this to go to an error page
+                context = {'error_message': message}
                 return render(request, 'error.html', context)
         else: # Search has been initiated
             # extract info from POST

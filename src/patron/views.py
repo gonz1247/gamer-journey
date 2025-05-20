@@ -67,6 +67,6 @@ def wishlist_view(request):
         return render(request, 'patron/wishlist.html', context)
     else:
         message = 'Must be signed in to view or add to a wishlist.'
-        context = {'error_message':message}# change this to go to an error page
+        context = {'error_message':message}
         return render(request, 'error.html', context)
 

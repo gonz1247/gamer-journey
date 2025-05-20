@@ -39,7 +39,7 @@ def diary_entry_view(request):
         return render(request, 'diary/diary_entry.html', context)
     else:
         message = 'Must be signed in to add entries to your diary.'
-        context = {'error_message':message}# change this to go to an error page
+        context = {'error_message':message}
         return render(request, 'error.html', context)
 
 def my_diary_view(request):
