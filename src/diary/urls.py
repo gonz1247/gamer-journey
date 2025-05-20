@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import diary_entry_view, my_diary_view, diary_edit_view, diary_delete_view, diary_detailed_view
+from .views import diary_entry_view, my_diary_view, diary_edit_view, diary_delete_view, diary_detailed_view, game_reviews_view
 
 urlpatterns = [
     path('', my_diary_view, name='diary'),
@@ -24,4 +24,5 @@ urlpatterns = [
     path('edit/<int:entry_id>/', diary_edit_view),
     path('delete/<int:entry_id>/', diary_delete_view),
     path('view/<int:entry_id>/', diary_detailed_view),
+    path('view/all/<int:game_id>/', game_reviews_view),
 ]

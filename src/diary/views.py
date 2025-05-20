@@ -119,3 +119,20 @@ def diary_detailed_view(request, entry_id):
         'entry':entry,
     }
     return render(request, 'diary/view_detailed.html', context)
+
+def game_reviews_view(request, game_id):
+    # grab all diary entries associated with this game
+    game = Game.objects.get(game_id=game_id)
+    entries = game.diaryentry_set.all()
+    total = 0
+    for n, entry in enumerate(entries):
+        total += entry.rating
+    review_stats = {}
+    review_stats['ave_rating'] = total / (n+1)
+    # Can add more stats later if I want
+    context = {
+        'entries': entries,
+        'game':game,
+        'review_stats':review_stats,
+    }
+    return render(request, 'diary/view_all_reviews.html', context)

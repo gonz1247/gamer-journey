@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block main-section %}
+<h2>
+    {{ game.title }}
+    <br>
+    <img src="{{ game.cover_art }}" alt="Game Cover Art">
+</h2>
+<p>Average rating: {{ review_stats.ave_rating }} / 5.0</p>
+{% for entry in entries %}
+<fieldset>
+    <p>Review By: {{ entry.patron.user.username }}</p>
+    <p>Platform: {{ entry.platform.device }}</p>
+    <p>{{ entry.rating }} / 5.0 stars</p>
+    <p>
+        {% if entry.completion_status %}
+            Completed on
+        {% else %}
+            Finished playing on
+        {% endif %}
+        {{ entry.completed_date }}
+        {% if entry.hours %}
+            after {{ entry.hours }} hours of playtime
+        {% endif %}
+    </p>
+    <hr>
+    <p>{{ entry.review }}</p>
+</fieldset>
+<br>
+{% endfor %}
+<a href="/">
+    <button type="submit">Return to home page</button>
+</a>
+{% endblock %}
