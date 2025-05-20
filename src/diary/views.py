@@ -17,7 +17,7 @@ def diary_entry_view(request):
             form.fields['platform'].choices = platforms
             if form.is_valid():
                 form.save()
-                return redirect('home')
+                return redirect('/diary/')
             else:
                 error_message = []
                 for [error] in form.errors.values():
@@ -61,7 +61,7 @@ def diary_edit_view(request, entry_id):
             entry = user.patron.diaryentry_set.get(pk=entry_id)
             game = entry.game
         except DiaryEntry.DoesNotExist:
-            message = "Cannot edit other patron's diary entries."
+            message = "Cannot edit another patron's diary entry."
             context = {'error_message': message}
             return render(request, 'error.html', context)
         if 'entry_id' in request.POST or request.method == 'GET': # user to manually type out URL is they really want
@@ -90,3 +90,24 @@ def diary_edit_view(request, entry_id):
         message = 'Must be signed in to add entries to your diary.'
         context = {'error_message':message}
         return render(request, 'error.html', context)
+
+def diary_delete_view(request, entry_id):
+    user = request.user
+    if user.is_authenticated:
+        try:
+            # grab diary entry
+            entry = user.patron.diaryentry_set.get(pk=entry_id)
+            game = entry.game
+        except DiaryEntry.DoesNotExist:
+            message = "Cannot delete another patron's diary entry."
+            context = {'error_message': message}
+            return render(request, 'error.html', context)
+        if 'confirmation' in request.POST:
+            if request.POST['confirmation'] == 'yes':
+                entry.delete()
+            return redirect('diary')
+        else:
+            context = {
+                'game':game,
+            }
+            return render(request, 'diary/delete_confirmation.html', context)

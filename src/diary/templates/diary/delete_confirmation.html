@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block main-section %}
+<h2>
+    {{ game.title }}
+    <br>
+    <img src="{{ game.cover_art }}" alt="Game Cover Art">
+</h2>
+
+<form action='.' method="post">
+    {% csrf_token %}
+    <label for="confirmation">Are you sure you want to delete your {{ game.title }} diary entry?</label>
+    <br>
+    <select name="confirmation" id="confirmation">
+        <option value="yes">yes</option>
+        <option value="no">no</option>
+    </select>
+    <button type="submit">Confirm Selection</button>
+</form>
+{% endblock %}
