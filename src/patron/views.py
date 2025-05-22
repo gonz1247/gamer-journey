@@ -17,7 +17,6 @@ def register_view(request):
             login(request, patron)
             return redirect('home')
         else:
-            # TODO: Check corner case of only a single error (i.e., instead of getting a list of list from form.errors.values(), just get the single error
             error_message = []
             for [error] in form.errors.values():
                 error_message.append(error)
