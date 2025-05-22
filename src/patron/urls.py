@@ -24,3 +24,5 @@ urlpatterns = [
     path('logout/', logout_view),
     path('wishlist/', wishlist_view),
 ]
+
+# TODO: Add a patron profile page that shows gaming stats

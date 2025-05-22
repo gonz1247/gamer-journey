@@ -26,3 +26,5 @@ urlpatterns = [
     path('profile/',include('patron.urls')),
     path('diary/',include('diary.urls')),
 ]
+
+# TODO: Add the about page

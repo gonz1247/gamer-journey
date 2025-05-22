@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
-<!-- TODO: Add in a content index page -->
 {% if user.is_authenticated %}
     <h2>Welcome, {{ user.username }}!</h2>
     <p>Choose what you would like to do today</p>
@@ -12,5 +11,6 @@
     </ol>
 {% else %}
     <h2>Welcome to the Gamer Journey web app!</h2>
+    <!-- TODO: Pictures on welcome page -->
 {% endif %}
 {% endblock  %}

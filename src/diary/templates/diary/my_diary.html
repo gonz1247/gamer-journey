@@ -14,6 +14,8 @@
     <tbody>
     {% for entry in diary reversed %}
         <tr>
+            <!-- TODO: Add diary entry date and star rating -->
+            <!-- TODO: Remove platform played on from diary view page-->
             <th><img src="{{ entry.game.cover_art}}" alt="Game Cover Art"></th>
             <th>{{ entry.game.title }}</th>
             <th>

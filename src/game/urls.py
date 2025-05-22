@@ -20,5 +20,9 @@ from .views import search_view, game_add
 
 urlpatterns = [
     path('',search_view),
+    # TODO: Add in multiple search options ->
+    # TODO: general search
+    # TODO: browse popular
+    # TODO: see suggestions
     path('add/',game_add),
 ]

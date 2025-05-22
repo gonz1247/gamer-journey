@@ -29,6 +29,7 @@ def diary_entry_view(request):
                 context = {'error_message':error_message}
                 return render(request, 'error.html', context)
         else: # get method being sent from game search
+            # TODO: Update this if statement to handle recieving a post method from the game search page
             # grab game info to display on the diary entry page
             game_id = request.GET['game_id']
             game = Game.add_or_grab_game(game_id)
@@ -36,6 +37,7 @@ def diary_entry_view(request):
             platforms = {p.device:p.device for p in game.platforms.all()}
             form = DiaryEntryForm(initial={'game':game_id, 'patron':user.patron.pk})
             form.fields['platform'].choices = platforms
+            # TODO: Make initial platform value to be patron's preffered platform if available
             context = {
                 'form':form,
                 'game':game,

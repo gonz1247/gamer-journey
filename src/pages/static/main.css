@@ -1,3 +1,4 @@
+/* TODO: Update styling */
 html {font-size:22px}
 
 body {
@@ -16,6 +17,8 @@ a:visited {
 a:hover {
     color: #eee;
 }
+
+/* TODO: Add second link style that shows up the same whether clicked or not and maybe no underline on it  */
 
 table, tr, th, td, caption {
 border: 1px solid #eee;
