@@ -5,21 +5,21 @@
     <caption>{{ user.username }}'s Diary</caption>
     <thead>
         <tr>
+            <th>Completed Date</th>
             <th>Cover Art</th>
             <th>Game Title</th>
-            <th>Platform</th>
+            <th>Rating</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
     {% for entry in diary reversed %}
         <tr>
-            <!-- TODO: Add diary entry date and star rating -->
-            <!-- TODO: Remove platform played on from diary view page-->
+            <th>{{ entry.completed_date }}</th>
             <th><img src="{{ entry.game.cover_art}}" alt="Game Cover Art"></th>
             <th>{{ entry.game.title }}</th>
             <th>
-                {{ entry.platform.device }}
+                {{ entry.rating }}
             </th>
             <th>
                 <form action="." method="post">

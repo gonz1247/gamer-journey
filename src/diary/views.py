@@ -52,7 +52,8 @@ def my_diary_view(request):
     user = request.user
     if user.is_authenticated:
         current_diary = user.patron.diaryentry_set.all()
-        context = {'diary': current_diary}
+        current_diary_sorted = sorted(current_diary, key=lambda entry: entry.completed_date)
+        context = {'diary': current_diary_sorted}
         return render(request, 'diary/my_diary.html', context)
     else:
         message = 'Must be signed in to view diary.'
