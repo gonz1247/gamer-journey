@@ -37,7 +37,8 @@ def diary_entry_view(request):
             platforms = {p.device:p.device for p in game.platforms.all()}
             form = DiaryEntryForm(initial={'game':game_id, 'patron':user.patron.pk})
             form.fields['platform'].choices = platforms
-            # TODO: Make initial platform value to be patron's preffered platform if available
+            if user.patron.fav_platform in platforms:
+                form.initial['platform'] = user.patron.fav_platform
             context = {
                 'form':form,
                 'game':game,

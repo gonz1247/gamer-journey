@@ -4,15 +4,21 @@ from .models import Patron
 from django.contrib.auth.models import User
 
 class PatronRegisterForm(UserCreationForm):
-    PLATFORM_CHOICES = [
-        ('none', 'No Preference'),
-        ('ps4', 'PlayStation 4'),
-        ('ps5', 'PlayStation 5'),
-        ('xbox-xs', 'XBOX Series X|S'),
-        ('xbox-one', 'Xbox One'),
-        ('switch', 'Nintendo Switch'),
-        ('pc', 'PC / Steam'),
-    ]
+    # Keeping the platform choice to last two generations
+    # Could in theory query the database to grab all possible options but that seems like it would be too much
+    PLATFORM_CHOICES = {
+        'none':'No Preference',
+        'Android': 'Android',
+        'iOS': 'iOS',
+        'Mac': 'Mac',
+        'Nintendo Switch': 'Nintendo Switch',
+        'Nintendo Switch 2': 'Nintendo Switch 2',
+        'PlayStation 4':'PlayStation 4',
+        'PlayStation 5':'PlayStation 5',
+        'PC (Microsoft Windows)': 'PC',
+        'Xbox One': 'Xbox One',
+        'Xbox Series X|S':'Xbox Series X|S',
+    }
     fav_platform = forms.ChoiceField(label='Preferred Platform', choices=PLATFORM_CHOICES, initial='none')
     class Meta(UserCreationForm.Meta):
         model = User
