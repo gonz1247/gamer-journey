@@ -28,10 +28,7 @@
     <hr>
     <p>{{ entry.review }}</p>
 </fieldset>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" formaction="/diary/">Return to my diary</button>
-    <button type="submit" formaction="/diary/view/all/{{ entry.game.game_id }}/">See more reviews of this game</button>
-</form>
+<a href="/diary/"><button type="submit">Return to my diary</button></a>
+<a href="/diary/view/all/{{ entry.game.game_id }}/"><button type="submit">See more reviews of this game</button></a>
 
 {% endblock %}

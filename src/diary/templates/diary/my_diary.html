@@ -26,15 +26,11 @@
                 {% endif %}
             </th>
             <th>
-                <form action="." method="post">
-                    {% csrf_token %}
-                     <input type="hidden" id="entry_id" name="entry_id" value="{{ entry.id }}">
-                    <button type="submit" formaction="view/{{ entry.id }}/">View Details</button>
-                    <br>
-                    <button type="submit" formaction="edit/{{ entry.id }}/">Edit Entry</button>
-                    <br>
-                    <button type="submit" formaction="delete/{{ entry.id }}/">Remove From Diary</button>
-                </form>
+                <a href="view/{{ entry.id }}/"><button type="submit">View Details</button></a>
+                <br>
+                <a href="edit/{{ entry.id }}/"><button type="submit">Edit Entry</button></a>
+                <br>
+                <a href="delete/{{ entry.id }}/"><button type="submit">Remove From Diary</button></a>
             </th>
         </tr>
     {% empty %}
