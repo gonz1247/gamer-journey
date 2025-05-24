@@ -9,7 +9,11 @@
     </h2>
     <p>Review By: {{ entry.patron.user.username }}</p>
     <p>Platform: {{ entry.platform.device }}</p>
-    <p>{{ entry.rating }} / 5.0 stars</p>
+    <p>
+        {% if entry.rating >= 0 %}
+            {{ entry.rating }} / 5.0 stars
+        {% endif %}
+    </p>
     <p>
         {% if entry.completion_status %}
             Completed on
@@ -24,11 +28,10 @@
     <hr>
     <p>{{ entry.review }}</p>
 </fieldset>
-<a href="/diary/">
-    <button type="submit">Return to my diary</button>
-</a>
-<br>
-<a href="/diary/view/all/{{ entry.game.game_id }}">
-    <button type="submit">See more reviews of this game</button>
-</a>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" formaction="/diary/">Return to my diary</button>
+    <button type="submit" formaction="/diary/view/all/{{ entry.game.game_id }}/">See more reviews of this game</button>
+</form>
+
 {% endblock %}

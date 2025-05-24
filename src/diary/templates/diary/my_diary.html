@@ -19,7 +19,11 @@
             <th><img src="{{ entry.game.cover_art}}" alt="Game Cover Art"></th>
             <th>{{ entry.game.title }}</th>
             <th>
-                {{ entry.rating }}
+                {% if entry.rating >= 0 %}
+                    {{ entry.rating }}
+                {% else %}
+                    N/A
+                {% endif %}
             </th>
             <th>
                 <form action="." method="post">

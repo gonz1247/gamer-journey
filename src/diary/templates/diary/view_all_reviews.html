@@ -11,7 +11,11 @@
 <fieldset>
     <p>Review By: {{ entry.patron.user.username }}</p>
     <p>Platform: {{ entry.platform.device }}</p>
-    <p>{{ entry.rating }} / 5.0 stars</p>
+    <p>
+        {% if entry.rating >= 0 %}
+            {{ entry.rating }} / 5.0 stars
+        {% endif %}
+    </p>
     <p>
         {% if entry.completion_status %}
             Completed on

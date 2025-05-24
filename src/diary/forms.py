@@ -8,8 +8,7 @@ import django.db
 class DiaryEntryForm(forms.ModelForm):
     review = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'What did you think of the game?'}), max_length=200, label='', required=False)
     platform = forms.ChoiceField(label='Played Platform*', required=True)
-    # TODO: Add and no rating option so can skip without giving zero stars
-    rating = forms.ChoiceField(choices={val/10:val/10 for val in range(0,55,5)}, help_text='Star Rating', required=False)
+    rating = forms.ChoiceField(choices={**{-1.0:'none'}, **{val/10:val/10 for val in range(0,55,5)}}, help_text='Star Rating', required=False)
     completed_date = forms.DateField(initial=date.today(), label='Date Completed*', required=True)
     completion_status = forms.BooleanField(label='Did you complete the game?', initial=False, required=False)
     hours = forms.IntegerField(min_value=0, required=False)

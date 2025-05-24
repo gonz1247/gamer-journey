@@ -136,10 +136,13 @@ def game_reviews_view(request, game_id):
         entries = game.diaryentry_set.all()
         assert len(entries)>0
         total = 0
-        for n, entry in enumerate(entries):
-            total += entry.rating
-        review_stats = {}
-        review_stats['ave_rating'] = total / (n+1)
+        n_reviews = 0
+        for entry in entries:
+            if entry.rating >= 0:
+                total += entry.rating
+                n_reviews += 1
+        review_stats = dict()
+        review_stats['ave_rating'] = total / (n_reviews)
         # Can add more stats later if I want
         context = {
             'entries': entries,
