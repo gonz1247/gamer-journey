@@ -8,7 +8,7 @@ from .models import DiaryEntry
 def diary_entry_view(request):
     user = request.user
     if user.is_authenticated:
-        if request.method == 'POST':
+        if request.method == 'POST' and 'game' in request.POST:
             # add game to diary
             form = DiaryEntryForm(request.POST)
             # add in choice fields again since this is generated dynamically when first loading the diary add page
@@ -28,10 +28,9 @@ def diary_entry_view(request):
                     error_message.append(error)
                 context = {'error_message':error_message}
                 return render(request, 'error.html', context)
-        else: # get method being sent from game search
-            # TODO: Update this if statement to handle recieving a post method from the game search page
+        elif request.method == 'POST' and 'game_id' in request.POST:
             # grab game info to display on the diary entry page
-            game_id = request.GET['game_id']
+            game_id = request.POST['game_id']
             game = Game.add_or_grab_game(game_id)
             # look up what platforms the game is available on and add options to form
             platforms = {p.device:p.device for p in game.platforms.all()}
@@ -43,7 +42,9 @@ def diary_entry_view(request):
                 'form':form,
                 'game':game,
             }
-        return render(request, 'diary/diary_entry.html', context)
+            return render(request, 'diary/diary_entry.html', context)
+        else:
+            return redirect('search_general')
     else:
         message = 'Must be signed in to add entries to your diary.'
         context = {'error_message':message}

@@ -13,7 +13,7 @@
     </form>
     {{ confirm_message }}
     {% if games %}
-        <form>
+        <form method="post">
             {% csrf_token %}
             <fieldset>
                 <legend>Select Game</legend>
@@ -30,9 +30,8 @@
                     </dt>
                 {% endfor %}
                 </dl>
-                <!-- TODO: Change both submits to be a post -->
-                <button type="submit" formaction="/diary/add/" formmethod="get">Add Game To Diary</button>
-                <button type="submit" formaction="." formmethod="post">Add Game To Wishlist</button>
+                <button type="submit" formaction="/diary/add/">Add Game To Diary</button>
+                <button type="submit" formaction=".">Add Game To Wishlist</button>
             </fieldset>
         </form>
     {% elif no_results %}

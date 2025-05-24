@@ -19,7 +19,7 @@ from django.urls import path, include
 from .views import search_view, game_add
 
 urlpatterns = [
-    path('',search_view),
+    path('',search_view, name='search_general'),
     # TODO: Add in multiple search options ->
     # TODO: general search
     # TODO: browse popular
