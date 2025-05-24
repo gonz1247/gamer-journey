@@ -123,6 +123,17 @@ class Game(models.Model):
             game = Game.objects.get(game_id=game_id)
         return game
 
+    @staticmethod
+    def general_igdb_search(endpoint=GAMES_END_POINT, query='fields *;'):
+        # get access token and set up header for request
+        access_token = Game._get_access_token()
+        auth = {'Client-ID': CONFIG_ENV['client_id'],
+                'Authorization': ('Bearer ' + access_token)}
+        # Search for inputted title
+        results = requests.post(endpoint, headers=auth, data=query).json()
+        # return results as they come from the API
+        return results
+
 
 
 
