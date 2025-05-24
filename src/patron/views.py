@@ -1,11 +1,9 @@
-#from django.shortcuts import render
-
 # Create your views here.
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 
-from .forms import PatronRegisterForm
+from .forms import PatronRegisterForm, PatronUpdateForm
+from .models import User
 from game.models import Game
 import datetime
 
@@ -85,6 +83,29 @@ def register_view(request):
         'error': error_message,
     }
     return render(request, "patron/register.html", context)
+
+def update_view(request):
+    user = request.user
+    if user.is_authenticated:
+        error_message = None
+        if request.method == "POST":
+            form = PatronUpdateForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                return redirect('/profile/')
+            else:
+                error_message = []
+                for [error] in form.errors.values():
+                    error_message.append(error)
+        form = PatronUpdateForm(instance=user)
+        form.initial['fav_platform'] = user.patron.fav_platform
+        context = {
+            'form': form,
+            'error': error_message,
+        }
+        return render(request, "patron/update_profile.html", context)
+    else:
+        return redirect('/profile/register/')
 
 def login_view(request):
     error_message = None

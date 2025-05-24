@@ -9,9 +9,9 @@
     <details>
         <summary>Profile Info</summary>
         <fieldset>
-            <p>Username: {{ user.username}}</p>
             <p>Favorite Platform : {{ user.patron.fav_platform}}</p>
-
+            <a href="/profile/update/"><button type="submit">Update Profile</button></a>
+            <a href="/profile/update/pw"><button type="submit">Change Password</button></a>
         </fieldset>
     </details>
 </article>

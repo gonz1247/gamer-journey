@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block main-section %}
+<h2>Update {{ user.username }}'s Profile</h2>
+{% if error %}
+    <dl style="color: red">Could update patron profile.</dl>
+    {% for message in error %}
+    <dd style="color: red">{{ message }}</dd>
+    {% endfor %}
+{% endif %}
+<form action="." method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update</button>
+</form>
+{% endblock %}
