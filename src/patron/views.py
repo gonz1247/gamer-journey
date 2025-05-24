@@ -7,6 +7,62 @@ from django.contrib.auth import login, authenticate, logout
 
 from .forms import PatronRegisterForm
 from game.models import Game
+import datetime
+
+def profile_view(request):
+    user = request.user
+    if user.is_authenticated:
+        # generate gamer stats based on diary entries
+        current_diary = user.patron.diaryentry_set.all()
+        genre_track = dict()
+        theme_track = dict()
+        fav_genre = ('N/A',-1)
+        fav_theme = ('N/A', -1)
+        fav_game = ('N/A', -1)
+        longest_game = ('N/A', -1)
+        most_recent_game = ('N/A', datetime.date(1, 1, 1))
+        for entry in current_diary:
+            # track favorite genre
+            for genre in entry.game.genres.all():
+                if genre.type in genre_track:
+                    # increment times this genre has appeared in diary
+                    genre_track[genre.type] += 1
+                    if fav_genre[1] < genre_track[genre.type]:
+                        fav_genre = (genre.type, genre_track[genre.type])
+                else:
+                    genre_track[genre.type] = 1
+            # track favorite theme
+            for theme in entry.game.themes.all():
+                if theme.type in theme_track:
+                    # increment times this genre has appeared in diary
+                    theme_track[theme.type] += 1
+                    if fav_theme[1] < theme_track[theme.type]:
+                        fav_theme = (theme.type, theme_track[theme.type])
+                else:
+                    theme_track[theme.type] = 1
+            # track favorite game
+            if entry.rating >= fav_game[1]:
+                fav_game = (entry.game, entry.rating)
+            # track game that took the longest to beat
+            if entry.hours: # default is None
+                if entry.hours >= longest_game[1]:
+                    longest_game = (entry.game, entry.hours)
+            # track most recently completed game (may not be last added entry)
+            if entry.completed_date >= most_recent_game[1]:
+                most_recent_game = (entry.game, entry.completed_date)
+
+        context = {
+            'fav_genre':fav_genre[0],
+            'fav_theme':fav_theme[0],
+            'fav_game':fav_game[0],
+            'longest_game':longest_game[0],
+            'most_recent_game':most_recent_game[0],
+        }
+        return render(request, 'patron/profile.html', context)
+    else:
+        message = 'Must be signed in to view your profile.'
+        context = {'error_message': message}
+        return render(request, 'error.html', context)
 
 def register_view(request):
     error_message = None

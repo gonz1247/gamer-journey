@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block main-section %}
+<h2>Welcome, {{user.username }}</h2>
+<hr>
+
+<h3>Gaming Stats</h3>
+<fieldset>
+    <p>
+        Most Recent Game: {{ most_recent_game.title }}
+        <br>
+        <img src="{{most_recent_game.cover_art}}" alt="{{most_recent_game.title}} cover art">
+    </p>
+    <p>
+        Favorite Game: {{ fav_game.title }}
+        <br>
+        <img src="{{fav_game.cover_art}}" alt="{{fav_game.title}} cover art">
+    </p>
+    <p>
+        Longest Game To Play: {{ longest_game.title }}
+        <br>
+        <img src="{{longest_game.cover_art}}" alt="{{longest_game.title}} cover art">
+    </p>
+    <p>Favorite Genre: {{ fav_genre }}</p>
+    <p>Favorite Theme In Games: {{ fav_theme }}</p>
+</fieldset>
+{% endblock %}
