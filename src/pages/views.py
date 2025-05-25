@@ -9,3 +9,7 @@ def index_view(request):
 def credits_view(request):
     context = {}
     return render(request, "credits.html", context)
+
+def about_view(request):
+    context = {}
+    return render(request, "about.html", context)
