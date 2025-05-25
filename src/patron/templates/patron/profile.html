@@ -2,9 +2,13 @@
 
 {% block main-section %}
 {% if user.first_name %}
-<h2>{{user.first_name }}'s Profile Page</h2>
+<h2>{{user.first_name}}'s Profile Page</h2>
 {% else %}
-<h2>{{user.username }}'s Profile Page</h2>
+<h2>{{user.username}}'s Profile Page</h2>
+{% endif %}
+
+{% if success_message %}
+    <p style="color: #00779f">{{success_message}}</p>
 {% endif %}
 
 <hr>

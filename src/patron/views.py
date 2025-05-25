@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 
-from .forms import PatronRegisterForm, PatronUpdateForm, PasswordChangeForm
+from .forms import PatronRegisterForm, PatronUpdateForm, PasswordUpdateForm
 from .models import User
 from game.models import Game
 import datetime
@@ -10,6 +10,10 @@ import datetime
 def profile_view(request):
     user = request.user
     if user.is_authenticated:
+        if request.method == 'POST':
+            success_message = request.POST['success_message']
+        else:
+            success_message = None
         # generate gamer stats based on diary entries
         current_diary = user.patron.diaryentry_set.all()
         genre_track = dict()
@@ -55,6 +59,7 @@ def profile_view(request):
             'fav_game':fav_game[0],
             'longest_game':longest_game[0],
             'most_recent_game':most_recent_game[0],
+            'success_message': success_message,
         }
         return render(request, 'patron/profile.html', context)
     else:
@@ -94,8 +99,7 @@ def update_info_view(request):
             form = PatronUpdateForm(request.POST, instance=user)
             if form.is_valid():
                 form.save()
-                # TODO: Add success message that gets displayed somewhere
-                return redirect('/profile/')
+                return  profile_view(request)
             else:
                 error_message = []
                 for [error] in form.errors.values():
@@ -115,19 +119,17 @@ def update_pw_view(request):
     if user.is_authenticated:
         error_message = None
         if request.method == "POST":
-            form = PasswordChangeForm(user, request.POST)
+            form = PasswordUpdateForm(user, request.POST)
             if form.is_valid():
                 user = form.save()
                 update_session_auth_hash(request, user)
-                # TODO: Add success message that gets displayed somewhere
-                # try something with -> return profile_view(request)
-                return redirect('/profile/')
+                return  profile_view(request)
             else:
                 error_message = []
                 for errors in form.errors.values():
                     for error in errors:
                         error_message.append(error)
-        form = PasswordChangeForm(user)
+        form = PasswordUpdateForm(user)
         form.fields['new_password1'].help_text = None
         form.fields['new_password2'].help_text = None
         context = {

@@ -46,6 +46,7 @@ class PatronRegisterForm(UserCreationForm):
 class PatronUpdateForm(UserChangeForm):
         password = None
         fav_platform = forms.ChoiceField(label='Preferred Platform', choices=PLATFORM_CHOICES, initial='none')
+        success_message = forms.CharField(widget=forms.HiddenInput, max_length=50, initial='Profile Was Successfully Updated.')
 
         class Meta:
             model = User
@@ -57,3 +58,10 @@ class PatronUpdateForm(UserChangeForm):
             patron.fav_platform = self.cleaned_data['fav_platform']
             patron.save()
             return user
+
+class PasswordUpdateForm(PasswordChangeForm):
+    # Only making my own form so that I can add the success message
+    success_message = forms.CharField(widget=forms.HiddenInput, max_length=50, initial='Password Was Successfully Updated.')
+
+    class Meta:
+        model = User
