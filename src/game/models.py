@@ -136,7 +136,7 @@ class Game(models.Model):
         return results
 
     @staticmethod
-    def popular_search(pop_type=3, fields='game_id', limit=10):
+    def popular_search(pop_type=2, fields='game_id', limit=10):
         # pop_type = 1: Based on IGDB visits
         # pop_type = 2: Based on IGDB want to play
         # pop_type = 3: Based on IGDB playing

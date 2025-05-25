@@ -23,13 +23,22 @@
                 {% endfor %}
             </th>
             <th>
-                <form action="." method="post">
+                {% if game in user.patron.wishlist.all %}
+                    <form action="." method="post">
+                        {% csrf_token %}
+                         <input type="hidden" id="pop_remove_wishlist_id" name="pop_remove_wishlist_id" value="{{ game.game_id }}">
+                        <button type="submit">Remove From Wishlist</button>
+                    </form>
+                {% else %}
+                    <form action="." method="post">
+                        {% csrf_token %}
+                         <input type="hidden" id="pop_add_game_id" name="pop_add_game_id" value="{{ game.game_id }}">
+                        <button type="submit">Add To Wishlist</button>
+                    </form>
+                {% endif %}
+                <br>
+                <form action="/diary/add/" method="post">
                     {% csrf_token %}
-                     <input type="hidden" id="wishlist_id" name="wishlist_id" value="{{ game.game_id }}">
-                    <button type="submit">Add To Wishlist</button>
-                    <br>
-                </form>
-                <form action="/diary/add/" method="get">
                      <input type="hidden" id="game_id" name="game_id" value="{{ game.game_id }}">
                     <button type="submit">Add To Diary</button>
                 </form>
