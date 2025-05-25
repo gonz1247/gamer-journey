@@ -7,6 +7,7 @@ import requests
 CONFIG_ENV = dotenv_values('.env')
 AUTHENTICATOR_URL = 'https://id.twitch.tv/oauth2/token?client_id={}&client_secret={}&grant_type=client_credentials'
 GAMES_END_POINT = 'https://api.igdb.com/v4/games'
+POPULAR_END_POINT = 'https://api.igdb.com/v4/popularity_primitives'
 
 # Create your models here.
 
@@ -132,6 +133,26 @@ class Game(models.Model):
         # Search for inputted title
         results = requests.post(endpoint, headers=auth, data=query).json()
         # return results as they come from the API
+        return results
+
+    @staticmethod
+    def popular_search(pop_type=3, fields='game_id', limit=10):
+        # pop_type = 1: Based on IGDB visits
+        # pop_type = 2: Based on IGDB want to play
+        # pop_type = 3: Based on IGDB playing
+        # pop_type = 4: Based on IGDB played
+        # pop_type = 5: Based on Steam 24hr peak
+        # pop_type = 6: Based on Steam positive reviews
+        # pop_type = 7: Based on Steam negative reviews (popular for the wrong reason)
+        # pop_type = 8: Based on Steam total reviews
+
+        # get access token and set up header for request
+        access_token = Game._get_access_token()
+        auth = {'Client-ID': CONFIG_ENV['client_id'],
+                'Authorization': ('Bearer ' + access_token)}
+        # Search popular games based on inputs
+        query = f'fields {fields}; sort value desc; limit {limit}; where popularity_type = {pop_type};'
+        results = requests.post(POPULAR_END_POINT, headers=auth, data=query).json()
         return results
 
 

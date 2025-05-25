@@ -28,7 +28,8 @@ def search_view(request):
                 context = {'games': results,
                            'searched_title':title}
             else:
-                context = {'no_results':True}
+                context = {'no_results':True,
+                           'searched_title':title}
 
     return render(request,'game/search_game.html',context)
 
@@ -36,7 +37,18 @@ def game_add(request):
     if request.method == 'POST':
         game_id = request.POST['game_id']
         game = Game.add_or_grab_game(game_id)
-        print(game.title)
     return render(request, 'game/search_game.html',{})
+
+def popular_view(request):
+    # Get Current Top 10 Games
+    results = Game.popular_search(limit=10)
+    pop_games = list()
+    for r in results:
+        game = Game.add_or_grab_game(r['game_id'])
+        pop_games.append(game)
+    context = {'pop_games': pop_games}
+    return render(request, 'game/popular_games.html', context)
+
+
 
 

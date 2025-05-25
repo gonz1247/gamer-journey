@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block main-section %}
+<table>
+    <caption>Top Popular Games Today</caption>
+    <thead>
+        <tr>
+            <th>Cover Art</th>
+            <th>Game Title</th>
+            <th>Platforms</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for game in pop_games %}
+        <tr>
+            <th><img src="{{ game.cover_art}}" alt="Game Cover Art"></th>
+            <th>{{ game.title }}</th>
+            <th>
+                {% for platform in game.platforms.all %}
+                    {{ platform.device }}
+                    <br>
+                {% endfor %}
+            </th>
+            <th>
+                <form action="." method="post">
+                    {% csrf_token %}
+                     <input type="hidden" id="wishlist_id" name="wishlist_id" value="{{ game.game_id }}">
+                    <button type="submit">Add To Wishlist</button>
+                    <br>
+                </form>
+                <form action="/diary/add/" method="get">
+                     <input type="hidden" id="game_id" name="game_id" value="{{ game.game_id }}">
+                    <button type="submit">Add To Diary</button>
+                </form>
+            </th>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import search_view, game_add
+from .views import search_view, popular_view, game_add
 
 urlpatterns = [
-    path('',search_view, name='search_general'),
+    path('search/',search_view, name='search_general'),
+    path('popular/',popular_view),
+    #path('suggestions/',suggestions_view),
     # TODO: Add in multiple search options ->
     # TODO: general search
     # TODO: browse popular
