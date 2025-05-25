@@ -2,7 +2,13 @@
 
 {% block main-section %}
 <table>
-    <caption>{{ user.username }}'s Wishlist</caption>
+    <caption>
+        {% if user.first_name %}
+            {{user.first_name }}'s Wishlist
+        {% else %}
+            {{ user.username }}'s Wishlist
+        {% endif %}
+    </caption>
     <thead>
         <tr>
             <th>Cover Art</th>

@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
+{% if user.first_name %}
+<h2>{{user.first_name }}'s Profile Page</h2>
+{% else %}
 <h2>{{user.username }}'s Profile Page</h2>
+{% endif %}
 
 <hr>
 
@@ -9,6 +13,9 @@
     <details>
         <summary>Profile Info</summary>
         <fieldset>
+            <p>First Name: {{ user.first_name}}</p>
+            <p>Last Name: {{ user.last_name}}</p>
+            <p>Email: {{ user.email}}</p>
             <p>Favorite Platform : {{ user.patron.fav_platform}}</p>
             <a href="/profile/update/"><button type="submit">Update Profile</button></a>
             <a href="/profile/update/pw"><button type="submit">Change Password</button></a>

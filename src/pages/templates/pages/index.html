@@ -2,7 +2,13 @@
 
 {% block main-section %}
 {% if user.is_authenticated %}
-    <h2>Welcome, {{ user.username }}!</h2>
+    <h2>Welcome,
+        {% if user.first_name %}
+            {{user.first_name }}!
+        {% else %}
+            {{ user.username }}!
+        {% endif %}
+    </h2>
     <p>Choose what you would like to do today</p>
     <ol>
         <li><a href="/game">Search Games</a></li>

@@ -2,7 +2,13 @@
 
 {% block main-section %}
 <table>
-    <caption>{{ user.username }}'s Diary</caption>
+    <caption>
+        {% if user.first_name %}
+            {{user.first_name }}'s Diary
+        {% else %}
+            {{ user.username }}'s Diary
+        {% endif %}
+    </caption>
     <thead>
         <tr>
             <th>Completed Date</th>

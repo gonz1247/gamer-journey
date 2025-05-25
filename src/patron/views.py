@@ -75,9 +75,11 @@ def register_view(request):
             for [error] in form.errors.values():
                 error_message.append(error)
     form = PatronRegisterForm()
-    # Need to manually remove help text after form has been initialized, only way I got it to work
+    # Can only make edits to how password1 and password2 appear after form has been initialized, only way I got it to work
     form.fields['password1'].help_text = None
+    form.fields['password1'].widget.attrs['placeholder'] = 'Required'
     form.fields['password2'].help_text = None
+    form.fields['password2'].widget.attrs['placeholder'] = 'Required'
     context = {
         'form': form,
         'error': error_message,
@@ -92,6 +94,7 @@ def update_info_view(request):
             form = PatronUpdateForm(request.POST, instance=user)
             if form.is_valid():
                 form.save()
+                # TODO: Add success message that gets displayed somewhere
                 return redirect('/profile/')
             else:
                 error_message = []
@@ -116,6 +119,8 @@ def update_pw_view(request):
             if form.is_valid():
                 user = form.save()
                 update_session_auth_hash(request, user)
+                # TODO: Add success message that gets displayed somewhere
+                # try something with -> return profile_view(request)
                 return redirect('/profile/')
             else:
                 error_message = []
