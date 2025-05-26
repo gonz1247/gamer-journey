@@ -45,10 +45,8 @@ def popular_view(request):
             return wishlist_view(request)
         # Get Current Top 10 Games
         results = Game.popular_search(limit=10)
-        pop_games = list()
-        for r in results:
-            game = Game.add_or_grab_game(r['game_id'])
-            pop_games.append(game)
+        pop_games = [r['game_id'] for r in results]
+        pop_games = Game.add_or_grab_game(pop_games)
         context = {'pop_games': pop_games}
         return render(request, 'game/popular_games.html', context)
     else:
@@ -74,10 +72,10 @@ def suggestions_view(request):
             known_games.add(game.game_id)
         # find all new games that can be suggested to the patron
         new_games = set()
-        for game_id in top3_games:
-            [results] = Game.game_id_search(game_id=game_id, fields='similar_games.*')
-            for sg in results['similar_games']:
-                new_game = sg['id']
+        top3_games_info = Game.game_id_search(game_id=top3_games, fields='similar_games.*')
+        for game_info in top3_games_info:
+            for game in game_info['similar_games']:
+                new_game = game['id']
                 if new_game not in known_games:
                     new_games.add(new_game)
         new_games = list(new_games)
@@ -87,8 +85,7 @@ def suggestions_view(request):
         while len(suggested_games) < max_games:
             suggested_games.append(new_games.pop(random.randint(0, len(new_games)-1)))
         # Populate info for the suggested games
-        for idx, game_id in enumerate(suggested_games):
-            suggested_games[idx] = Game.add_or_grab_game(game_id)
+        suggested_games = Game.add_or_grab_game(suggested_games)
         context = {'pop_games': suggested_games}
         return render(request, 'game/suggested_games.html', context)
     else:

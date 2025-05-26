@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from pages.views import index_view, credits_view, about_view
 
+# TODO: Add a contact me page (add my personal email to the .env file
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index_view, name='home'),

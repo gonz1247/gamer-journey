@@ -62,11 +62,18 @@ class Game(models.Model):
         access_token = Game._get_access_token()
         auth = {'Client-ID': CONFIG_ENV['client_id'],
                 'Authorization': ('Bearer ' + access_token)}
+        # set up query for batch or single game search
+        query = f'fields {fields}; where id='
+        if isinstance(game_id,list) or isinstance(game_id,set):
+            batch=list()
+            for game in game_id:
+                batch.append(str(game))
+            query = query + '(' + ','.join(batch) + ');'
+        else:
+            query += f'{game_id};'
         # Search for inputted title
-        query = f'fields {fields}; where id={game_id};'
         results = requests.post(GAMES_END_POINT, headers=auth, data=query).json()
-        # check if results came back
-        assert len(results) == 1, 'Invalid game_id'
+        # Format results that came back
         game_info = Game._format_search(results)
         return game_info
 
@@ -95,34 +102,38 @@ class Game(models.Model):
 
     @staticmethod
     def add_or_grab_game(game_id):
-        try: # create game if not in DB
-            [game_info] = Game.game_id_search(game_id)
-            # temp add in
-            game = Game.objects.create(**game_info)
-            [game_info] = game.self_search()
-            for genre_type in game_info['genres']:
-                try:
-                    genre = Genre.objects.create(type=genre_type)
-                except django.db.IntegrityError: # grab instance of genre instead
-                    genre = Genre.objects.get(type=genre_type)
-                game.genres.add(genre)
-            for theme_type in game_info['themes']:
-                try:
-                    theme = Theme.objects.create(type=theme_type)
-                except django.db.IntegrityError: # grab instance of genre instead
-                    theme = Theme.objects.get(type=theme_type)
-                game.themes.add(theme)
-            for platform_device in game_info['platforms']:
-                try:
-                    platform = Platform.objects.create(device=platform_device)
-                except django.db.IntegrityError: # grab instance of genre instead
-                    platform = Platform.objects.get(device=platform_device)
-                game.platforms.add(platform)
-            game.save()
-            # alternatively could grab list of all game_id, genres, and themes but not sure if using try/except is just faster than searching through N instances
-        except django.db.IntegrityError: # grab instance of game instead
-            game = Game.objects.get(game_id=game_id)
-        return game
+        batch_games = list()
+        batch_info = Game.game_id_search(game_id)
+        for game_info in batch_info:
+            try: # create game if not in DB
+                # temp add in
+                game = Game.objects.create(**game_info)
+                [game_info] = game.self_search()
+                for genre_type in game_info['genres']:
+                    try:
+                        genre = Genre.objects.create(type=genre_type)
+                    except django.db.IntegrityError: # grab instance of genre instead
+                        genre = Genre.objects.get(type=genre_type)
+                    game.genres.add(genre)
+                for theme_type in game_info['themes']:
+                    try:
+                        theme = Theme.objects.create(type=theme_type)
+                    except django.db.IntegrityError: # grab instance of genre instead
+                        theme = Theme.objects.get(type=theme_type)
+                    game.themes.add(theme)
+                for platform_device in game_info['platforms']:
+                    try:
+                        platform = Platform.objects.create(device=platform_device)
+                    except django.db.IntegrityError: # grab instance of genre instead
+                        platform = Platform.objects.get(device=platform_device)
+                    game.platforms.add(platform)
+                game.save()
+                # alternatively could grab list of all game_id, genres, and themes but not sure if using try/except is just faster than searching through N instances
+            except django.db.IntegrityError: # grab instance of game instead
+                game = Game.objects.get(game_id=game_info['game_id'])
+            batch_games.append(game)
+        if len(batch_games) == 1: batch_games = batch_games[0] # backwards compatibility for when this was set up as single game search only
+        return batch_games
 
     @staticmethod
     def general_igdb_search(endpoint=GAMES_END_POINT, query='fields *;'):
