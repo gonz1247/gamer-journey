@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from pages.views import index_view, credits_view, about_view
+from pages.views import index_view, credits_view, about_view, contact_view
 
-# TODO: Add a contact me page (add my personal email to the .env file
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index_view, name='home'),
     path('about/', about_view),
     path('credits/', credits_view),
+    path('contact/', contact_view),
     path('game/',include('game.urls')),
     path('profile/',include('patron.urls')),
     path('diary/',include('diary.urls')),

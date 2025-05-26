@@ -125,3 +125,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email settings
+from dotenv import dotenv_values
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = dotenv_values('.env')['admin_email']
+EMAIL_HOST_PASSWORD = dotenv_values('.env')['admin_email_pw']
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
