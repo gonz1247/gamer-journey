@@ -172,26 +172,6 @@ def wishlist_view(request):
                 wishlist_id = request.POST['wishlist_id']
                 game = user.patron.wishlist.get(game_id=wishlist_id)
                 user.patron.wishlist.remove(game)
-            elif 'pop_add_game_id' in request.POST: # add a game to wishlist and then go back to popular games screen
-                game_id = request.POST['pop_add_game_id']
-                game = Game.add_or_grab_game(game_id)
-                user.patron.wishlist.add(game)
-                return redirect('/game/popular/')
-            elif 'pop_remove_wishlist_id' in request.POST: # remove a game from wishlist and then go back to popular games screen
-                wishlist_id = request.POST['pop_remove_wishlist_id']
-                game = user.patron.wishlist.get(game_id=wishlist_id)
-                user.patron.wishlist.remove(game)
-                return redirect('/game/popular/')
-            elif 'suggest_add_game_id' in request.POST: # add a game to wishlist and then go back to suggested games screen
-                game_id = request.POST['suggest_add_game_id']
-                game = Game.add_or_grab_game(game_id)
-                user.patron.wishlist.add(game)
-                return redirect('/game/suggestions/')
-            elif 'suggest_remove_wishlist_id' in request.POST: # remove a game from wishlist and then go back to suggested games screen
-                wishlist_id = request.POST['suggest_remove_wishlist_id']
-                game = user.patron.wishlist.get(game_id=wishlist_id)
-                user.patron.wishlist.remove(game)
-                return redirect('/game/suggestions/')
         current_wishlist = user.patron.wishlist.all()
         context = {'wishlist':current_wishlist}
         return render(request, 'patron/wishlist.html', context)

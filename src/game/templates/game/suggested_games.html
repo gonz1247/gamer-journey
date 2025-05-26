@@ -20,7 +20,7 @@
     </thead>
     <tbody>
     {% for game in pop_games %}
-        <tr>
+        <tr id="{{ game.game_id }}">
             <th><img src="{{ game.cover_art}}" alt="Game Cover Art"></th>
             <th>{{ game.title }}</th>
             <th>
@@ -31,27 +31,25 @@
             </th>
             <th>
                 {% if game in user.patron.wishlist.all %}
-                    <form action="." method="post">
+                    <form action="./#{{ game.game_id }}" method="post">
                         {% csrf_token %}
                          <input type="hidden" id="suggest_remove_wishlist_id" name="suggest_remove_wishlist_id" value="{{ game.game_id }}">
                         <button type="submit">Remove From Wishlist</button>
+                        {{ form.as_p }}
                     </form>
                 {% else %}
-                    <form action="." method="post">
+                    <form action="./#{{ game.game_id }}" method="post">
                         {% csrf_token %}
                          <input type="hidden" id="suggest_add_game_id" name="suggest_add_game_id" value="{{ game.game_id }}">
                         <button type="submit">Add To Wishlist</button>
+                        {{ form.as_p }}
                     </form>
                 {% endif %}
-                <br>
-                <form action="/diary/add/" method="post">
-                    {% csrf_token %}
-                     <input type="hidden" id="game_id" name="game_id" value="{{ game.game_id }}">
-                    <button type="submit">Add To Diary</button>
-                </form>
             </th>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+<a href="."><button>Reload Suggestions</button></a>
+{{ form.as_p }}
 {% endblock %}
