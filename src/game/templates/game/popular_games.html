@@ -28,12 +28,14 @@
                         {% csrf_token %}
                          <input type="hidden" id="pop_remove_wishlist_id" name="pop_remove_wishlist_id" value="{{ game.game_id }}">
                         <button type="submit">Remove From Wishlist</button>
+                        {{ form.as_p }}
                     </form>
                 {% else %}
                     <form action="./#{{ game.game_id }}" method="post">
                         {% csrf_token %}
                          <input type="hidden" id="pop_add_game_id" name="pop_add_game_id" value="{{ game.game_id }}">
                         <button type="submit">Add To Wishlist</button>
+                        {{ form.as_p }}
                     </form>
                 {% endif %}
             </th>

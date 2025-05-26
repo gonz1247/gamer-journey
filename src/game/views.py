@@ -41,19 +41,34 @@ def search_view(request):
 def popular_view(request):
     user = request.user
     if user.is_authenticated:
-        if 'pop_add_game_id' in request.POST:  # add a game to wishlist and then go back to popular games screen
-            game_id = request.POST['pop_add_game_id']
-            game = Game.add_or_grab_game(game_id)
-            user.patron.wishlist.add(game)
-        if 'pop_remove_wishlist_id' in request.POST:  # remove a game from wishlist and then go back to popular games screen
-            wishlist_id = request.POST['pop_remove_wishlist_id']
-            game = user.patron.wishlist.get(game_id=wishlist_id)
-            user.patron.wishlist.remove(game)
-        # Get Current Top 10 Games
-        results = Game.popular_search(limit=10)
-        pop_games = [r['game_id'] for r in results]
-        pop_games = Game.add_or_grab_game(pop_games)
-        context = {'pop_games': pop_games}
+        if request.method == 'POST':
+            if 'pop_add_game_id' in request.POST:  # add a game to wishlist and then go back to popular games screen
+                game_id = request.POST['pop_add_game_id']
+                game = Game.add_or_grab_game(game_id)
+                user.patron.wishlist.add(game)
+            if 'pop_remove_wishlist_id' in request.POST:  # remove a game from wishlist and then go back to popular games screen
+                wishlist_id = request.POST['pop_remove_wishlist_id']
+                game = user.patron.wishlist.get(game_id=wishlist_id)
+                user.patron.wishlist.remove(game)
+            # recall cached data for suggestions page and recache it
+            pop_games = request.POST['games']
+            form = CacheSearch(initial={'games': pop_games})
+            pop_games = pop_games.split(',')
+            # Populate info for the suggested games
+            pop_games = Game.add_or_grab_game(pop_games)
+            context = {'pop_games': pop_games,
+                       'form': form}
+        else:
+            # Get Current Top 10 Games
+            results = Game.popular_search(limit=10)
+            pop_games = [str(r['game_id']) for r in results]
+            # cache the top 10 games so can display the exact same list after patron adds games to wishlist (incase IGDB changes right at that time)
+            initial = ','.join(pop_games)
+            form = CacheSearch(initial={'games': initial})
+            # Populate info for the suggested games
+            pop_games = Game.add_or_grab_game(pop_games)
+            context = {'pop_games': pop_games,
+                       'form': form}
         return render(request, 'game/popular_games.html', context)
     else:
         message = "Sign in to start using Gamer Journey's search features"
