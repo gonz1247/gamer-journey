@@ -1,20 +1,26 @@
+{% load static %}
 <header>
-    <h1>Gamer Journey</h1>
+<table class="logoTable">
+    <tbody>
+        <tr>
+            <th><a href="/"><img src="{% static 'ai-generated-8531096_1280.png' %}" height="100" alt="Gamer Journey Logo"></a></th>
+            <th><h1>Gamer Journey</h1></th>
+</table>
     <nav>
         <p>
-            <a href="/">Home</a>,
+            <a href="/" class="noline">Home</a>,
             {% if not user.is_authenticated %}
-                <a href="/profile/login">Login</a>,
+                <a href="/profile/login" class="noline">Login</a>,
             {% else %}
-                <a href="/profile">
+                <a href="/profile" class="noline">
                     {% if user.first_name %}
                         {{user.first_name }}</a>,
                     {% else %}
                         {{ user.username }}</a>,
                     {% endif %}
-                <a href="/profile/logout">Logout</a>,
+                <a href="/profile/logout" class="noline">Logout</a>,
             {% endif %}
-            <a href="/about">About</a>
+            <a href="/about" class="noline">About</a>
         </p>
     </nav>
 </header>
