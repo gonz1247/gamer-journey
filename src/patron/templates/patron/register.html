@@ -2,14 +2,20 @@
 
 {% block main-section %}
 {% if error %}
-    <dl style="color: red">Could not create user.</dl>
-    {% for message in error %}
-    <dd style="color: red">{{ message }}</dd>
-    {% endfor %}
+<section id="error-message">
+    <dl>
+        <dt style="color: red">Could not create user.</dt>
+        {% for message in error %}
+            <dd style="color: red">{{ message }}</dd>
+        {% endfor %}
+    </dl>
+</section>
 {% endif %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+<section id="register-form">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+</section>
 {% endblock %}

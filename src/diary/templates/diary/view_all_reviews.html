@@ -6,9 +6,11 @@
     <br>
     <img src="{{ game.cover_art }}" alt="Game Cover Art">
 </h2>
-<p>Average rating: {{ review_stats.ave_rating }} / 5.0</p>
+<section id="{{ game.title }}-review-stats">
+    <p>Average rating: {{ review_stats.ave_rating }} / 5.0</p>
+</section>
 {% for entry in entries %}
-<fieldset>
+<fieldset id="{{ entry.patron.user.username }}-review">
     <p>Review By: {{ entry.patron.user.username }}</p>
     <p>Platform: {{ entry.platform.device }}</p>
     <p>
@@ -32,7 +34,9 @@
 </fieldset>
 <br>
 {% endfor %}
-<a href="/">
-    <button type="submit">Return to home page</button>
-</a>
+<section id="action-buttons">
+    <a href="/">
+        <button type="submit">Return to home page</button>
+    </a>
+</section>
 {% endblock %}

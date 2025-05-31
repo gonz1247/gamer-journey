@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
-{% if feedback_message %}
-<p>{{ feedback_message }}</p>
-{% endif %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Send Message</button>
-</form>
+<section id="action-feedback">
+    {% if feedback_message %}
+    <p>{{ feedback_message }}</p>
+    {% endif %}
+</section>
+<section id="contact-form">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send Message</button>
+    </form>
+</section>
 {% endblock %}

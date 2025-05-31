@@ -2,20 +2,25 @@
 
 {% block main-section %}
 {% if error %}
-    <dd style="color: red">{{ error }}</dd>
+<section id="error-message">
+    <p style="color: red">{{ error }}</p>
+</section>
 {% endif %}
-<form action="." method="post">
-    {% csrf_token %}
-    <p>
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" autocomplete="off" required>
-    </p>
-    <p>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" autocomplete="off" required>
-    </p>
-    <button type="submit">Login</button>
-</form>
-<a href="/profile/register/"><button type="submit">Create Account</button></a>
-
+<section id="login-form">
+    <form action="." method="post">
+        {% csrf_token %}
+        <p>
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" autocomplete="off" required>
+        </p>
+        <p>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" autocomplete="off" required>
+        </p>
+        <button type="submit">Login</button>
+    </form>
+</section>
+<section id="patron-register-option">
+    <a href="/profile/register/"><button type="submit">Create Account</button></a>
+</section>
 {% endblock %}

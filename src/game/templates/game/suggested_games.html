@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
-<table>
+<table id="suggested-games">
     <caption>
         Suggested Games For
         {% if user.first_name %}
@@ -50,5 +50,7 @@
     {% endfor %}
     </tbody>
 </table>
-<a href="."><button>Reload Suggestions</button></a>
+<section id="action-buttons">
+    <a href="."><button>Reload Suggestions</button></a>
+</section>
 {% endblock %}

@@ -10,24 +10,28 @@
             {{ user.username }}!
         {% endif %}
     </h2>
-    <p>Choose what you would like to do today</p>
-    <ol>
-        <li><a href="/game/search/" class="noline">Search Games</a></li>
-        <li><a href="/game/popular/" class="noline">See Today's Top 10 Games</a></li>
-        <li><a href="/game/suggestions/" class="noline">See Games Suggested For You</a></li>
-        <li><a href="/diary" class="noline">View Diary</a></li>
-        <li><a href="/profile/wishlist" class="noline">View Wishlist</a></li>
-    </ol>
+    <section id="main-menu">
+        <p>Choose what you would like to do today</p>
+        <ol>
+            <li><a href="/game/search/" class="noline">Search Games</a></li>
+            <li><a href="/game/popular/" class="noline">See Today's Top 10 Games</a></li>
+            <li><a href="/game/suggestions/" class="noline">See Games Suggested For You</a></li>
+            <li><a href="/diary" class="noline">View Diary</a></li>
+            <li><a href="/profile/wishlist" class="noline">View Wishlist</a></li>
+        </ol>
+    </section>
 {% else %}
     <h2>Welcome to the Gamer Journey web app!</h2>
-    <img src="{% static 'controller-7692999_640.png' %}" alt="controller1 image" height="200">
-    <img src="{% static 'game-5357587_640.png' %} " alt="controller2" width="200">
-    <img src="{% static 'controller-1486900_640.png' %} " alt="controller3" width="200">
-    <img src="{% static 'monitor-32232_640.png' %} " alt="controller4" width="200">
-    <br>
-    <img src="{% static 'nintendo-switch-6694997_640.png' %} " alt="controller5" width="200">
-    <img src="{% static 'video-game-6529701_640.png' %} " alt="controller6" width="200">
-    <img src="{% static 'game-7154684_640.png' %} " alt="controller7" width="200">
-    <img src="{% static 'ps4-5172918_640.png' %} " alt="controller8" width="200">
+    <section id="welcome-images">
+        <img src="{% static 'controller-7692999_640.png' %}" alt="controller1 image" height="200">
+        <img src="{% static 'game-5357587_640.png' %} " alt="controller2" width="200">
+        <img src="{% static 'controller-1486900_640.png' %} " alt="controller3" width="200">
+        <img src="{% static 'monitor-32232_640.png' %} " alt="controller4" width="200">
+        <br>
+        <img src="{% static 'nintendo-switch-6694997_640.png' %} " alt="controller5" width="200">
+        <img src="{% static 'video-game-6529701_640.png' %} " alt="controller6" width="200">
+        <img src="{% static 'game-7154684_640.png' %} " alt="controller7" width="200">
+        <img src="{% static 'ps4-5172918_640.png' %} " alt="controller8" width="200">
+    </section>
 {% endif %}
 {% endblock  %}

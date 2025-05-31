@@ -6,10 +6,12 @@
     <br>
     <img src="{{ game.cover_art }}" alt="Game Cover Art">
 </h2>
-<p>Review</p>
-<form action='.' method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add To My Diary</button>
-</form>
+<section id="diary-entry-form">
+    <p>Review</p>
+    <form action='.' method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add To My Diary</button>
+    </form>
+</section>
 {% endblock %}

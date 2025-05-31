@@ -1,55 +1,60 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
-{% if user.first_name %}
-<h2>{{user.first_name}}'s Profile Page</h2>
-{% else %}
-<h2>{{user.username}}'s Profile Page</h2>
-{% endif %}
+<section id="patron-welcome">
+    {% if user.first_name %}
+    <h2>{{user.first_name}}'s Profile Page</h2>
+    {% else %}
+    <h2>{{user.username}}'s Profile Page</h2>
+    {% endif %}
+</section>
 
 {% if success_message %}
+<section id="action-feedback">
     <p style="color: #00779f">{{success_message}}</p>
+</section>
 {% endif %}
 
 <hr>
 
-<article id="info">
-    <details>
-        <summary>Profile Info</summary>
-        <fieldset>
-            <p>First Name: {{ user.first_name}}</p>
-            <p>Last Name: {{ user.last_name}}</p>
-            <p>Email: {{ user.email}}</p>
-            <p>Favorite Platform : {{ user.patron.fav_platform}}</p>
-            <a href="/profile/update/"><button type="submit">Update Profile</button></a>
-            <a href="/profile/update/pw"><button type="submit">Change Password</button></a>
-        </fieldset>
-    </details>
-</article>
+<section id="profile-overview">
+    <article id="info">
+        <details>
+            <summary>Profile Info</summary>
+            <fieldset>
+                <p>First Name: {{ user.first_name}}</p>
+                <p>Last Name: {{ user.last_name}}</p>
+                <p>Email: {{ user.email}}</p>
+                <p>Favorite Platform : {{ user.patron.fav_platform}}</p>
+                <a href="/profile/update/"><button type="submit">Update Profile</button></a>
+                <a href="/profile/update/pw"><button type="submit">Change Password</button></a>
+            </fieldset>
+        </details>
+    </article>
 
-<article id="stats">
-    <details>
-        <summary>Gaming Stats</summary>
-        <fieldset>
-            <p>
-                Most Recent Game: {{ most_recent_game.title }}
-                <br>
-                <img src="{{most_recent_game.cover_art}}" alt="{{most_recent_game.title}} cover art">
-            </p>
-            <p>
-                Favorite Game: {{ fav_game.title }}
-                <br>
-                <img src="{{fav_game.cover_art}}" alt="{{fav_game.title}} cover art">
-            </p>
-            <p>
-                Game With Most Hours In: {{ longest_game.title }}
-                <br>
-                <img src="{{longest_game.cover_art}}" alt="{{longest_game.title}} cover art">
-            </p>
-            <p>Favorite Genre: {{ fav_genre }}</p>
-            <p>Favorite Theme In Games: {{ fav_theme }}</p>
-        </fieldset>
-    </details>
-</article>
-
+    <article id="stats">
+        <details>
+            <summary>Gaming Stats</summary>
+            <fieldset>
+                <p>
+                    Most Recent Game: {{ most_recent_game.title }}
+                    <br>
+                    <img src="{{most_recent_game.cover_art}}" alt="{{most_recent_game.title}} cover art">
+                </p>
+                <p>
+                    Favorite Game: {{ fav_game.title }}
+                    <br>
+                    <img src="{{fav_game.cover_art}}" alt="{{fav_game.title}} cover art">
+                </p>
+                <p>
+                    Game With Most Hours In: {{ longest_game.title }}
+                    <br>
+                    <img src="{{longest_game.cover_art}}" alt="{{longest_game.title}} cover art">
+                </p>
+                <p>Favorite Genre: {{ fav_genre }}</p>
+                <p>Favorite Theme In Games: {{ fav_theme }}</p>
+            </fieldset>
+        </details>
+    </article>
+</section>
 {% endblock %}

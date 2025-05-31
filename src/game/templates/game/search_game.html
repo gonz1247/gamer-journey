@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
-<main>
+<section id="search-form">
     <form action="." method="POST">
         {% csrf_token %}
         {% if searched_title %}
@@ -11,12 +11,15 @@
         {% endif %}
         <button type="submit">Find Game</button>
     </form>
+</section>
+<section id="action-feedback">
     {{ confirm_message }}
-    {% if games %}
+</section>
+{% if games %}
+    <fieldset id="search-results-form">
+        <legend>Select Game</legend>
         <form method="post">
             {% csrf_token %}
-            <fieldset>
-                <legend>Select Game</legend>
                 <dl>
                 {% for game in games %}
                     <dt>
@@ -32,10 +35,11 @@
                 </dl>
                 <button type="submit" formaction="/diary/add/">Add Game To Diary</button>
                 <button type="submit" formaction=".">Add Game To Wishlist</button>
-            </fieldset>
         </form>
-    {% elif no_results %}
-        <p>No Results Were Returned For That Search Request</p>
-    {% endif %}
-</main>
+    </fieldset>
+{% elif no_results %}
+<section id="empty-results-message">
+    <p>No Results Were Returned For That Search Request</p>
+</section>
+{% endif %}
 {% endblock %}

@@ -1,16 +1,26 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
-<h2>Update {{ user.username }}'s Profile</h2>
+{% if user.first_name %}
+    <h2>Update {{user.first_name}}'s Profile</h2>
+    {% else %}
+    <h2>Update {{ user.username }}'s Profile</h2>
+    {% endif %}
 {% if error %}
-    <dl style="color: red">Could update patron profile.</dl>
-    {% for message in error %}
-    <dd style="color: red">{{ message }}</dd>
-    {% endfor %}
+<section id="error-message">
+    <dl>
+        <dt style="color: red">Could update patron profile.</dt>
+        {% for message in error %}
+            <dd style="color: red">{{ message }}</dd>
+        {% endfor %}
+    </dl>
+</section>
 {% endif %}
-<form action="." method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update</button>
-</form>
+<section id="update-form">
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+</section>
 {% endblock %}

@@ -1,16 +1,26 @@
 {% extends 'base.html' %}
 
 {% block main-section %}
-<h2>Update {{ user.username }}'s Password</h2>
+{% if user.first_name %}
+    <h2>Update {{user.first_name}}'s Password</h2>
+    {% else %}
+    <h2>Update {{ user.username }}'s Password</h2>
+    {% endif %}
 {% if error %}
-    <dl style="color: red">Could not update password.</dl>
-    {% for message in error %}
-    <dd style="color: red">{{ message }}</dd>
-    {% endfor %}
+<section id="error-message">
+    <dl>
+        <dt style="color: red">Could not update password.</dt>
+        {% for message in error %}
+        <dd style="color: red">{{ message }}</dd>
+        {% endfor %}
+    </dl>
+</section>
 {% endif %}
-<form action="." method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update</button>
-</form>
+<section id="update-form">
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+</section>
 {% endblock %}
