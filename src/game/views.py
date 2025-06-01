@@ -55,7 +55,13 @@ def popular_view(request):
             form = CacheSearch(initial={'games': pop_games})
             pop_games = pop_games.split(',')
             # Populate info for the suggested games
-            pop_games = Game.add_or_grab_game(pop_games)
+            pop_games = Game.game_id_search(pop_games, fields='name,cover.*,platforms.*')
+            # Check to see which games are in user wishlist
+            for game in pop_games:
+                if game['game_id'] in user.patron.wishlist.all().values_list('game_id', flat=True):
+                    game['in_wishlist'] = True
+                else:
+                    game['in_wishlist'] = False
             context = {'pop_games': pop_games,
                        'form': form}
         else:
@@ -66,7 +72,13 @@ def popular_view(request):
             initial = ','.join(pop_games)
             form = CacheSearch(initial={'games': initial})
             # Populate info for the suggested games
-            pop_games = Game.add_or_grab_game(pop_games)
+            pop_games = Game.game_id_search(pop_games, fields='name,cover.*,platforms.*')
+            # Check to see which games are in user wishlist
+            for game in pop_games:
+                if game['game_id'] in user.patron.wishlist.all().values_list('game_id',flat=True):
+                    game['in_wishlist'] = True
+                else:
+                    game['in_wishlist'] = False
             context = {'pop_games': pop_games,
                        'form': form}
         return render(request, 'game/popular_games.html', context)
@@ -92,7 +104,13 @@ def suggestions_view(request):
             form = CacheSearch(initial={'games':suggested_games})
             suggested_games = suggested_games.split(',')
             # Populate info for the suggested games
-            suggested_games = Game.add_or_grab_game(suggested_games)
+            suggested_games = Game.game_id_search(suggested_games, fields='name,cover.*,platforms.*')
+            # Check to see which games are in user wishlist (since just added one or more form suggested list)
+            for game in suggested_games:
+                if game['game_id'] in user.patron.wishlist.all().values_list('game_id', flat=True):
+                    game['in_wishlist'] = True
+                else:
+                    game['in_wishlist'] = False
             context = {'pop_games': suggested_games,
                        'form': form}
         else:
@@ -110,8 +128,7 @@ def suggestions_view(request):
             new_games = set()
             top3_games_info = Game.game_id_search(game_id=top3_games, fields='similar_games.*')
             for game_info in top3_games_info:
-                for game in game_info['similar_games']:
-                    new_game = game['id']
+                for new_game in game_info['similar_games']:
                     if new_game not in known_games:
                         new_games.add(new_game)
             new_games = list(new_games)
@@ -124,7 +141,7 @@ def suggestions_view(request):
             initial = ','.join([str(game_id) for game_id in suggested_games])
             form = CacheSearch(initial={'games':initial})
             # Populate info for the suggested games
-            suggested_games = Game.add_or_grab_game(suggested_games)
+            suggested_games = Game.game_id_search(suggested_games, fields='name,cover.*,platforms.*')
             context = {'pop_games': suggested_games,
                        'form': form}
         return render(request, 'game/suggested_games.html', context)
