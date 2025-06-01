@@ -1,24 +1,25 @@
 # gamer-journey
-Web app for tracking/rating games played
+Web app for tracking/rating video games played and creating wishlist for future playing! 
 
-## Features Outline
-- User profiles with a diary and wishlist
-- Diary
-  - Collection of games a user has played
-  - Games in diary have rating, completion/done playing date, platform played on, hours played, if completed, etc.
-  - User can manually edit or remove entries from diary
-  - Stat about diary should be generated upon request
-    - Total hours played
-    - Favorite platform
-    - Favorite genre?
-    - etc. 
-- Wishlist
-  - Collection of games a user wants to play
-  - Games in wishlist only have a name
-  - Games added to user diary should be removed from their wishlist
-  - User can also manually remove games from wishlist
-- User
-  - User should be properly authenticated when logged in
-- API
-  - Web app will utilize `https://www.igdb.com/api` for gathering information about games that are played or added to wishlist 
-    
+I got the idea for this project since I am huge fan of video games, but also movies. For my movie watching hobby I use [Letterboxd](https://letterboxd.com/) to track everything I am watching, so I thought it would be cool if there was a similar app for playing video games.
+
+Currently, I am an aerospace engineer but, I am hoping to pivot my career to software engineering hopefully soon. I am hopeful that continuing to work on personal projects like this will help me to develop the skills and portfolio necessary to make the switch in careers.
+
+## Setup
+- Clone repository to your local machine
+- Install required dependencies using the `requirements.txt` document
+  - `python -m pip install -r ./src/requirements.txt`
+- Follow the [IGDB instructions](https://api-docs.igdb.com/#account-creation) for obtaining a `Client ID` and `Client Secret` for the required API
+- Create a `.env` file in the `src` directory that has all the required information indicated in the `.env.example` (note that `.env` is in `.gitignore` since it will contain personal/sensitive information)
+  - If using an smtp such as gmail (or maybe others) you may need to create an [application password](https://support.google.com/accounts/answer/185833?hl=en)
+- Working within the `src` directory, migrate changes for the project 
+  - `python manage.py migrate`
+- Create a superuser if needed
+  - `python manage.py createsuperuser` and input requested info
+  - Note that the superuser will not automatically have an account for gamer-journey so will need to add account manually using admin tools or just not use the superuser for gamer-journey patron actions
+- Run the server
+  - `python manage.py runserver`
+- Use link provided in terminal (i.e., `http://127.0.0.1:8000/`) to access gamer-journey web app
+
+## Future Work
+The creation of this web-app was done as a learning exercise for myself. I also plan to create a branch on this repo for a version of gamer-journey that I can host on the free server.
