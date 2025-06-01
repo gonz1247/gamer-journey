@@ -1,4 +1,5 @@
 from charset_normalizer.cli import query_yes_no
+from django.db.models.query import QuerySet
 from django.db import models
 import django.db
 from dotenv import dotenv_values
@@ -64,7 +65,7 @@ class Game(models.Model):
                 'Authorization': ('Bearer ' + access_token)}
         # set up query for batch or single game search
         query = f'fields {fields}; where id='
-        if isinstance(game_id,list) or isinstance(game_id,set):
+        if isinstance(game_id,list) or isinstance(game_id,set) or isinstance(game_id,QuerySet):
             batch=list()
             for game in game_id:
                 batch.append(str(game))
@@ -80,7 +81,7 @@ class Game(models.Model):
     @staticmethod
     def _format_search(query_results):
         # Extract relevant info from query
-        extract_fields = {'cover':'url','genres':'name','themes':'name','platforms':'name'}
+        extract_fields = {'cover':'url','genres':'name','themes':'name','platforms':'name', 'similar_games':'id'}
         for game in query_results:
             for key, value in extract_fields.items():
                 if game.get(key):
