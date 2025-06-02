@@ -22,8 +22,8 @@
     {% for entry in diary reversed %}
         <tr>
             <th>{{ entry.completed_date }}</th>
-            <th><img src="{{ entry.game.cover_art}}" alt="Game Cover Art"></th>
-            <th>{{ entry.game.title }}</th>
+            <th><img src="{{ entry.cover_art}}" alt="Game Cover Art"></th>
+            <th>{{ entry.title }}</th>
             <th>
                 {% if entry.rating >= 0 %}
                     {{ entry.rating }}
@@ -40,7 +40,7 @@
             </th>
         </tr>
     {% empty %}
-        <tr><th colspan="4">No Games Have Been Added To Your Diary Yet!</th></tr>
+        <tr><th colspan="5">No Games Have Been Added To Your Diary Yet!</th></tr>
     {% endfor %}
     </tbody>
 </table>

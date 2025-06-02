@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for game in wishlist reversed %}
+    {% for game in wishlist %}
         <tr>
             <th><img src="{{ game.cover_art}}" alt="Game Cover Art"></th>
             <th>{{ game.title }}</th>
@@ -35,7 +35,8 @@
                     <button type="submit">Remove From Wishlist</button>
                     <br>
                 </form>
-                <form action="/diary/add/" method="get">
+                <form action="/diary/add/" method="post">
+                    {% csrf_token %}
                      <input type="hidden" id="game_id" name="game_id" value="{{ game.game_id }}">
                     <button type="submit">Add To Diary</button>
                 </form>
