@@ -23,7 +23,7 @@ class Platform(models.Model):
 
 
 class Game(models.Model):
-    game_id = models.IntegerField(unique=True)
+    game_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=100)
     url = models.CharField(max_length=100)
     cover_art = models.CharField(max_length=100, blank=True)

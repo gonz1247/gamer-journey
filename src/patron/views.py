@@ -174,7 +174,7 @@ def wishlist_view(request):
                 game = user.patron.wishlist.get(game_id=wishlist_id)
                 user.patron.wishlist.remove(game)
         current_wishlist = user.patron.wishlist.all().values_list('game_id', flat=True)
-        current_wishlist = Game.game_id_search(current_wishlist, fields='name,cover.*,platforms.*')
+        if current_wishlist: current_wishlist = Game.game_id_search(current_wishlist, fields='name,cover.*,platforms.*')
         context = {'wishlist':current_wishlist}
         return render(request, 'patron/wishlist.html', context)
     else:
