@@ -12,12 +12,6 @@ POPULAR_END_POINT = 'https://api.igdb.com/v4/popularity_primitives'
 
 # Create your models here.
 
-class Genre(models.Model):
-    type = models.CharField(max_length=25, unique=True)
-
-class Theme(models.Model):
-    type = models.CharField(max_length=25, unique=True)
-
 class Platform(models.Model):
     device = models.CharField(max_length=25, unique=True)
 
@@ -27,9 +21,6 @@ class Game(models.Model):
     title = models.CharField(max_length=100)
     url = models.CharField(max_length=100)
     cover_art = models.CharField(max_length=100, blank=True)
-    genres = models.ManyToManyField(Genre)
-    themes = models.ManyToManyField(Theme)
-    platforms = models.ManyToManyField(Platform)
 
     def self_search(self,fields='name,cover.*,url,genres.*,themes.*,platforms.*'):
         return self.game_id_search(self.game_id,fields)
@@ -109,25 +100,6 @@ class Game(models.Model):
             try: # create game if not in DB
                 # temp add in
                 game = Game.objects.create(**game_info)
-                [game_info] = game.self_search()
-                for genre_type in game_info['genres']:
-                    try:
-                        genre = Genre.objects.create(type=genre_type)
-                    except django.db.IntegrityError: # grab instance of genre instead
-                        genre = Genre.objects.get(type=genre_type)
-                    game.genres.add(genre)
-                for theme_type in game_info['themes']:
-                    try:
-                        theme = Theme.objects.create(type=theme_type)
-                    except django.db.IntegrityError: # grab instance of genre instead
-                        theme = Theme.objects.get(type=theme_type)
-                    game.themes.add(theme)
-                for platform_device in game_info['platforms']:
-                    try:
-                        platform = Platform.objects.create(device=platform_device)
-                    except django.db.IntegrityError: # grab instance of genre instead
-                        platform = Platform.objects.get(device=platform_device)
-                    game.platforms.add(platform)
                 game.save()
                 # alternatively could grab list of all game_id, genres, and themes but not sure if using try/except is just faster than searching through N instances
             except django.db.IntegrityError: # grab instance of game instead

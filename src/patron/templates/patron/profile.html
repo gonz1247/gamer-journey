@@ -36,23 +36,35 @@
         <details>
             <summary>Gaming Stats</summary>
             <fieldset>
+                {% if most_recent_game != 'N/A' %}
                 <p>
                     Most Recent Game: {{ most_recent_game.title }}
                     <br>
                     <img src="{{most_recent_game.cover_art}}" alt="{{most_recent_game.title}} cover art">
                 </p>
+                {% else %}
+                   <p>Add Games To Diary To See Gaming Stats</p>
+                {% endif %}
+                {% if fav_game != 'N/A' %}
                 <p>
                     Favorite Game: {{ fav_game.title }}
                     <br>
                     <img src="{{fav_game.cover_art}}" alt="{{fav_game.title}} cover art">
                 </p>
+                {% endif %}
+                {% if longest_game != 'N/A' %}
                 <p>
                     Game With Most Hours In: {{ longest_game.title }}
                     <br>
                     <img src="{{longest_game.cover_art}}" alt="{{longest_game.title}} cover art">
                 </p>
+                {% endif %}
+                {% if fav_genre != 'N/A' %}
                 <p>Favorite Genre: {{ fav_genre }}</p>
+                {% endif %}
+                {% if fav_theme != 'N/A' %}
                 <p>Favorite Theme In Games: {{ fav_theme }}</p>
+                {% endif %}
             </fieldset>
         </details>
     </article>
