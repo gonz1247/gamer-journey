@@ -55,14 +55,17 @@ def my_diary_view(request):
     user = request.user
     if user.is_authenticated:
         current_diary = user.patron.diaryentry_set.all()
-        # Get game info for each entry
-        game_info = Game.game_id_search(current_diary.values_list('game_id',flat=True),fields='name,cover.*')
-        # Convert entry and game info to dictionary so that game_info can be matched up with entry (API returns info in order of game_id, not order or request list)
-        current_diary_sorted = list()
-        for info in game_info:
-            current_diary_sorted.append(current_diary.get(game_id=info['game_id']).__dict__ | info)
-        # sort by completion date
-        current_diary_sorted = sorted(current_diary_sorted, key=lambda entry: entry['completed_date'])
+        if current_diary:
+            # Get game info for each entry
+            game_info = Game.game_id_search(current_diary.values_list('game_id',flat=True),fields='name,cover.*')
+            # Convert entry and game info to dictionary so that game_info can be matched up with entry (API returns info in order of game_id, not order or request list)
+            current_diary_sorted = list()
+            for info in game_info:
+                current_diary_sorted.append(current_diary.get(game_id=info['game_id']).__dict__ | info)
+            # sort by completion date
+            current_diary_sorted = sorted(current_diary_sorted, key=lambda entry: entry['completed_date'])
+        else:
+            current_diary_sorted = current_diary
         context = {'diary': current_diary_sorted}
         return render(request, 'diary/my_diary.html', context)
     else:
