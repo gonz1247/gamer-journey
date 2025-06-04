@@ -11,11 +11,6 @@ GAMES_END_POINT = 'https://api.igdb.com/v4/games'
 POPULAR_END_POINT = 'https://api.igdb.com/v4/popularity_primitives'
 
 # Create your models here.
-
-class Platform(models.Model):
-    device = models.CharField(max_length=25, unique=True)
-
-
 class Game(models.Model):
     game_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=100)
