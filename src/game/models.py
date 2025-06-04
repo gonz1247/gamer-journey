@@ -13,9 +13,6 @@ POPULAR_END_POINT = 'https://api.igdb.com/v4/popularity_primitives'
 # Create your models here.
 class Game(models.Model):
     game_id = models.IntegerField(primary_key=True)
-    title = models.CharField(max_length=100)
-    url = models.CharField(max_length=100)
-    cover_art = models.CharField(max_length=100, blank=True)
 
     def self_search(self,fields='name,cover.*,url,genres.*,themes.*,platforms.*'):
         return self.game_id_search(self.game_id,fields)
@@ -88,17 +85,14 @@ class Game(models.Model):
         return query_results
 
     @staticmethod
-    def add_or_grab_game(game_id):
+    def add_or_grab_game(game_id_list):
+        if not isinstance(game_id_list, list): game_id_list = [game_id_list]
         batch_games = list()
-        batch_info = Game.game_id_search(game_id)
-        for game_info in batch_info:
+        for game_id in game_id_list:
             try: # create game if not in DB
-                # temp add in
-                game = Game.objects.create(**game_info)
-                game.save()
-                # alternatively could grab list of all game_id, genres, and themes but not sure if using try/except is just faster than searching through N instances
+                game = Game.objects.create(game_id=game_id)
             except django.db.IntegrityError: # grab instance of game instead
-                game = Game.objects.get(game_id=game_info['game_id'])
+                game = Game.objects.get(game_id=game_id)
             batch_games.append(game)
         if len(batch_games) == 1: batch_games = batch_games[0] # backwards compatibility for when this was set up as single game search only
         return batch_games

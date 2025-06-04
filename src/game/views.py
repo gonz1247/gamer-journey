@@ -14,8 +14,9 @@ def search_view(request):
                 if user.is_authenticated:
                     game_id = request.POST['game_id']
                     game = Game.add_or_grab_game(game_id)
+                    [game_info] = Game.game_id_search(game_id,fields='name')
                     user.patron.wishlist.add(game)
-                    context = {'confirm_message': (game.title + ' has been added to your wishlist!')}
+                    context = {'confirm_message': (game_info['title'] + ' has been added to your wishlist!')}
                 else:
                     message = 'Must be signed in add games to a wishlist.'
                     context = {'error_message': message}
