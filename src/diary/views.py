@@ -66,7 +66,7 @@ def my_diary_view(request):
                 for entry in entries:
                     current_diary_sorted.append(entry.__dict__ | info)
             # sort by completion date
-            current_diary_sorted = sorted(current_diary_sorted, key=lambda entry: entry['completed_date'])
+            current_diary_sorted = sorted(current_diary_sorted, key=lambda entry: (entry['completed_date'], entry['entry_datetime']))
         else:
             current_diary_sorted = current_diary
         context = {'diary': current_diary_sorted}

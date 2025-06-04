@@ -16,3 +16,5 @@ class DiaryEntry(models.Model):
     completed_date = models.DateField()
     completion_status = models.BooleanField()
     hours = models.IntegerField(null=True)
+    # entry time will be used to better sort when multiple games were finished on the same day
+    entry_datetime = models.DateTimeField()
