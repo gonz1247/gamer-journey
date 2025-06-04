@@ -2,7 +2,7 @@ from django import forms
 from .models import DiaryEntry
 from game.models import Game
 from patron.models import Patron
-from datetime import date
+from datetime import date, datetime
 import django.db
 
 class DiaryEntryForm(forms.ModelForm):
@@ -15,9 +15,10 @@ class DiaryEntryForm(forms.ModelForm):
     # these will be initialized with the form
     game = forms.IntegerField(widget=forms.HiddenInput)
     patron = forms.IntegerField(widget=forms.HiddenInput)
+    entry_datetime = forms.DateTimeField(initial=datetime.now(), widget=forms.HiddenInput)
     class Meta:
         model = DiaryEntry
-        fields = ('review', 'platform', 'rating', 'completed_date', 'completion_status', 'hours', 'game', 'patron')
+        fields = ('review', 'platform', 'rating', 'completed_date', 'completion_status', 'hours', 'game', 'patron', 'entry_datetime')
 
     def clean_game(self):
         game_id = self.cleaned_data['game']
