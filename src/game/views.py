@@ -1,6 +1,6 @@
 import django.db, random
 from django.shortcuts import render, redirect
-from .models import Game, Platform
+from .models import Game
 from patron.views import wishlist_view
 from .forms import CacheSearch
 

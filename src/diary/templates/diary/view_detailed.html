@@ -8,7 +8,7 @@
         <img src="{{ game.cover_art }}" alt="Game Cover Art">
     </h2>
     <p>Review By: {{ entry.patron.user.username }}</p>
-    <p>Platform: {{ entry.platform.device }}</p>
+    <p>Platform: {{ entry.platform }}</p>
     <p>
         {% if entry.rating >= 0 %}
             {{ entry.rating }} / 5.0 stars

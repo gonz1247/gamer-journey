@@ -8,13 +8,13 @@
 </h2>
 <section id="{{ game.title }}-review-stats">
     {% if review_stats %}
-    <p>Average rating: {{ review_stats.ave_rating }} / 5.0</p>
+    <p>Average rating: {{ review_stats.ave_rating }} / 5.0 stars</p>
     {% endif %}
 </section>
 {% for entry in entries %}
 <fieldset id="{{ entry.patron.user.username }}-review">
     <p>Review By: {{ entry.patron.user.username }}</p>
-    <p>Platform: {{ entry.platform.device }}</p>
+    <p>Platform: {{ entry.platform }}</p>
     <p>
         {% if entry.rating >= 0 %}
             {{ entry.rating }} / 5.0 stars

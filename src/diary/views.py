@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import DiaryEntryForm
-from game.models import Game, Platform
+from game.models import Game
 from .models import DiaryEntry
 
 # Create your views here.
@@ -90,7 +90,7 @@ def diary_edit_view(request, entry_id):
             platforms = {p: p for p in game_info['platforms']}
             form.fields['platform'].choices = platforms
             # Add in intial data for fields that had their data structure type changed in cleaning
-            form.initial['platform'] = entry.platform.device
+            form.initial['platform'] = entry.platform
             form.initial['game'] = entry.game.game_id
             context = {
                 'form':form,

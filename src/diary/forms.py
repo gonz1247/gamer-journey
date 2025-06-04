@@ -1,6 +1,6 @@
 from django import forms
 from .models import DiaryEntry
-from game.models import Platform, Game
+from game.models import Game
 from patron.models import Patron
 from datetime import date
 import django.db
@@ -18,15 +18,6 @@ class DiaryEntryForm(forms.ModelForm):
     class Meta:
         model = DiaryEntry
         fields = ('review', 'platform', 'rating', 'completed_date', 'completion_status', 'hours', 'game', 'patron')
-
-
-    def clean_platform(self):
-        platform_name = self.cleaned_data['platform']
-        try:
-            platform = Platform.objects.create(device=platform_name)
-        except django.db.IntegrityError:
-            platform = Platform.objects.get(device=platform_name)
-        return platform
 
     def clean_game(self):
         game_id = self.cleaned_data['game']
