@@ -1,7 +1,5 @@
-from charset_normalizer.cli import query_yes_no
 from django.db.models.query import QuerySet
-from django.db import models
-import django.db
+from django.db import models, IntegrityError
 from dotenv import dotenv_values
 import requests
 
@@ -91,7 +89,7 @@ class Game(models.Model):
         for game_id in game_id_list:
             try: # create game if not in DB
                 game = Game.objects.create(game_id=game_id)
-            except django.db.IntegrityError: # grab instance of game instead
+            except IntegrityError: # grab instance of game instead
                 game = Game.objects.get(game_id=game_id)
             batch_games.append(game)
         if len(batch_games) == 1: batch_games = batch_games[0] # backwards compatibility for when this was set up as single game search only

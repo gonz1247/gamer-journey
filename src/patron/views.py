@@ -1,7 +1,6 @@
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
-
 from .forms import PatronRegisterForm, PatronUpdateForm, PasswordUpdateForm
 from .models import User
 from game.models import Game

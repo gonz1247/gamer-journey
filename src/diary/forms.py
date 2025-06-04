@@ -3,7 +3,6 @@ from .models import DiaryEntry
 from game.models import Game
 from patron.models import Patron
 from datetime import date, datetime
-import django.db
 
 class DiaryEntryForm(forms.ModelForm):
     review = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'What did you think of the game?'}), max_length=200, label='', required=False)
