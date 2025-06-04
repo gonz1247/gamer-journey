@@ -29,7 +29,10 @@ def profile_view(request):
             # Convert entry and game info to dictionary so that game_info can be matched up with entry (API returns info in order of game_id, not order or request list)
             current_diary_and_info = list()
             for info in game_info:
-                current_diary_and_info.append(current_diary.get(game_id=info['game_id']).__dict__ | info)
+                # find all instances of this game in the diary
+                entries = current_diary.filter(game_id=info['game_id'])
+                for entry in entries:
+                    current_diary_and_info.append(entry.__dict__ | info)
             for entry in current_diary_and_info:
                 # track favorite genre
                 for genre in entry['genres']:
