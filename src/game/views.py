@@ -116,34 +116,36 @@ def suggestions_view(request):
         else:
             # grab top 3 games from diary & start to create a set of what games the patron knows about already
             current_diary_sorted = sorted(user.patron.diaryentry_set.all(), key=lambda entry: entry.rating)
-            top3_games = list()
-            known_games = set()
-            for entry in current_diary_sorted:
-                if len(top3_games) < 3: top3_games.append(entry.game.game_id)
-                known_games.add(entry.game.game_id)
-            # Add patron's wishlist to set of known games
-            for game in user.patron.wishlist.all():
-                known_games.add(game.game_id)
-            # find all new games that can be suggested to the patron
-            new_games = set()
-            top3_games_info = Game.game_id_search(game_id=top3_games, fields='similar_games.*')
-            for game_info in top3_games_info:
-                for new_game in game_info['similar_games']:
-                    if new_game not in known_games:
-                        new_games.add(new_game)
-            new_games = list(new_games)
-            # grab up to 10 games to suggest to the patron
-            suggested_games = list()
-            max_games = min(10, len(new_games))
-            while len(suggested_games) < max_games:
-                suggested_games.append(new_games.pop(random.randint(0, len(new_games)-1)))
-            # cache the suggested items so can display the exact same list after patron adds games to wishlist
-            initial = ','.join([str(game_id) for game_id in suggested_games])
-            form = CacheSearch(initial={'games':initial})
-            # Populate info for the suggested games
-            suggested_games = Game.game_id_search(suggested_games, fields='name,cover.*,platforms.*')
-            context = {'pop_games': suggested_games,
-                       'form': form}
+            context = {}
+            if current_diary_sorted:
+                top3_games = list()
+                known_games = set()
+                for entry in current_diary_sorted:
+                    if len(top3_games) < 3: top3_games.append(entry.game.game_id)
+                    known_games.add(entry.game.game_id)
+                # Add patron's wishlist to set of known games
+                for game in user.patron.wishlist.all():
+                    known_games.add(game.game_id)
+                # find all new games that can be suggested to the patron
+                new_games = set()
+                top3_games_info = Game.game_id_search(game_id=top3_games, fields='similar_games.*')
+                for game_info in top3_games_info:
+                    for new_game in game_info['similar_games']:
+                        if new_game not in known_games:
+                            new_games.add(new_game)
+                new_games = list(new_games)
+                # grab up to 10 games to suggest to the patron
+                suggested_games = list()
+                max_games = min(10, len(new_games))
+                while len(suggested_games) < max_games:
+                    suggested_games.append(new_games.pop(random.randint(0, len(new_games)-1)))
+                # cache the suggested items so can display the exact same list after patron adds games to wishlist
+                initial = ','.join([str(game_id) for game_id in suggested_games])
+                form = CacheSearch(initial={'games':initial})
+                # Populate info for the suggested games
+                suggested_games = Game.game_id_search(suggested_games, fields='name,cover.*,platforms.*')
+                context = {'suggested_games': suggested_games,
+                           'form': form}
         return render(request, 'game/suggested_games.html', context)
     else:
         message = "Sign in to start using Gamer Journey's search features"

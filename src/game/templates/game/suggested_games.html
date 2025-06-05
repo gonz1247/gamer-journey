@@ -52,7 +52,9 @@
     {% endfor %}
     </tbody>
 </table>
+{% if suggested_games %}
 <section id="action-buttons">
     <a href="."><button>Reload Suggestions</button></a>
 </section>
+{% endif %}
 {% endblock %}
