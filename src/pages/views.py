@@ -34,6 +34,9 @@ def contact_view(request):
             else:
                 feedback_message = 'Contact form was not able to be submitted.'
     form = ContactForm()
+    if request.user.is_authenticated:
+        if request.user.email:
+            form.fields['email'].initial = request.user.email
     context = {'form':form,
                'feedback_message': feedback_message}
     return render(request, "contact.html", context)
