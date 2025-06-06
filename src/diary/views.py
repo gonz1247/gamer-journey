@@ -142,7 +142,7 @@ def game_reviews_view(request, game_id):
                 total += entry.rating
                 n_reviews += 1
         review_stats = dict()
-        review_stats['ave_rating'] = total / (n_reviews)
+        if n_reviews > 0: review_stats['ave_rating'] = total / (n_reviews)
         # Can add more stats later if I want
         context = {
             'entries': entries,

@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for game in pop_games %}
+    {% for game in suggested_games %}
         <tr id="{{ game.game_id }}">
             <th><img src="{{ game.cover_art}}" alt="Game Cover Art"></th>
             <th>{{ game.title }}</th>
@@ -47,6 +47,8 @@
                 {% endif %}
             </th>
         </tr>
+    {% empty %}
+        <tr><th colspan="4">Please Add Games To Your Diary To Get Game Suggestions.</th></tr>
     {% endfor %}
     </tbody>
 </table>
