@@ -4,13 +4,7 @@ Web app for tracking/rating video games played and creating wishlist for future 
 I got the idea for this project since I am huge fan of video games, but also movies. For my movie watching hobby I use
 [Letterboxd](https://letterboxd.com/) to track everything I am watching, so I thought it would be cool if there was a
 similar app for playing video games.
-I got the idea for this project since I am huge fan of video games, but also movies. For my movie watching hobby I use
-[Letterboxd](https://letterboxd.com/) to track everything I am watching, so I thought it would be cool if there was a
-similar app for playing video games.
 
-Currently, I am an aerospace engineer but, I am hoping to pivot my career to software engineering hopefully soon. I am
-hopeful that continuing to work on personal projects like this will help me to develop the skills and portfolio
-necessary to make the switch in careers.
 Currently, I am an aerospace engineer but, I am hoping to pivot my career to software engineering hopefully soon. I am
 hopeful that continuing to work on personal projects like this will help me to develop the skills and portfolio
 necessary to make the switch in careers.
@@ -21,7 +15,6 @@ Please check out the live version of the gamer-journey web app at
 to being on the free tier the database will be refreshed on a monthly basis (i.e., if you create an account and populate
 it with games, it will all be deleted eventually). Also, when accessing the web app it may take up to 1 minute to load
 initially, this is another fallout of using the Render free tier. 
-
 
 ## Differences From Local Dev Branch
 This branch of the gamer-journey project is in a ready for deployment state. I used Render for deploying the web app,
