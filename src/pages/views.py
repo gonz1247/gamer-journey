@@ -1,4 +1,3 @@
-from django.contrib.messages import success
 from django.shortcuts import render
 from .forms import ContactForm
 from django.core.mail import send_mail
