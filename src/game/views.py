@@ -111,7 +111,7 @@ def suggestions_view(request):
                     game['in_wishlist'] = True
                 else:
                     game['in_wishlist'] = False
-            context = {'pop_games': suggested_games,
+            context = {'suggested_games': suggested_games,
                        'form': form}
         else:
             # grab top 3 games from diary & start to create a set of what games the patron knows about already
