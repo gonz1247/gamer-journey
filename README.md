@@ -49,5 +49,4 @@ project upon initializing
 
 ## Future Work
 At this time I don't have any plans to expand gamer-journey nor switch to a paid tier of Render so that web 
-app can truly be live. However, if you have feedback (or want to suggest that I should make the web app truly 
-live) please reach out via the [contact page](https://gamer-journey.onrender.com/contact/) on the live web app. 
+app can truly be live.
