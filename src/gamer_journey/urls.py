@@ -23,7 +23,6 @@ urlpatterns = [
     path('', index_view, name='home'),
     path('about/', about_view),
     path('credits/', credits_view),
-    path('contact/', contact_view),
     path('game/',include('game.urls')),
     path('profile/',include('patron.urls')),
     path('diary/',include('diary.urls')),

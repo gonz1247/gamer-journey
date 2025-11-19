@@ -1,6 +1,5 @@
-from charset_normalizer.cli import query_yes_no
-from django.db import models
-import django.db
+from django.db.models.query import QuerySet
+from django.db import models, IntegrityError
 from dotenv import dotenv_values
 import requests
 
@@ -10,25 +9,8 @@ GAMES_END_POINT = 'https://api.igdb.com/v4/games'
 POPULAR_END_POINT = 'https://api.igdb.com/v4/popularity_primitives'
 
 # Create your models here.
-
-class Genre(models.Model):
-    type = models.CharField(max_length=25, unique=True)
-
-class Theme(models.Model):
-    type = models.CharField(max_length=25, unique=True)
-
-class Platform(models.Model):
-    device = models.CharField(max_length=25, unique=True)
-
-
 class Game(models.Model):
-    game_id = models.IntegerField(unique=True)
-    title = models.CharField(max_length=100)
-    url = models.CharField(max_length=100)
-    cover_art = models.CharField(max_length=100, blank=True)
-    genres = models.ManyToManyField(Genre)
-    themes = models.ManyToManyField(Theme)
-    platforms = models.ManyToManyField(Platform)
+    game_id = models.IntegerField(primary_key=True)
 
     def self_search(self,fields='name,cover.*,url,genres.*,themes.*,platforms.*'):
         return self.game_id_search(self.game_id,fields)
@@ -64,7 +46,7 @@ class Game(models.Model):
                 'Authorization': ('Bearer ' + access_token)}
         # set up query for batch or single game search
         query = f'fields {fields}; where id='
-        if isinstance(game_id,list) or isinstance(game_id,set):
+        if isinstance(game_id,list) or isinstance(game_id,set) or isinstance(game_id,QuerySet):
             batch=list()
             for game in game_id:
                 batch.append(str(game))
@@ -80,7 +62,7 @@ class Game(models.Model):
     @staticmethod
     def _format_search(query_results):
         # Extract relevant info from query
-        extract_fields = {'cover':'url','genres':'name','themes':'name','platforms':'name'}
+        extract_fields = {'cover':'url','genres':'name','themes':'name','platforms':'name', 'similar_games':'id'}
         for game in query_results:
             for key, value in extract_fields.items():
                 if game.get(key):
@@ -101,36 +83,14 @@ class Game(models.Model):
         return query_results
 
     @staticmethod
-    def add_or_grab_game(game_id):
+    def add_or_grab_game(game_id_list):
+        if not isinstance(game_id_list, list): game_id_list = [game_id_list]
         batch_games = list()
-        batch_info = Game.game_id_search(game_id)
-        for game_info in batch_info:
+        for game_id in game_id_list:
             try: # create game if not in DB
-                # temp add in
-                game = Game.objects.create(**game_info)
-                [game_info] = game.self_search()
-                for genre_type in game_info['genres']:
-                    try:
-                        genre = Genre.objects.create(type=genre_type)
-                    except django.db.IntegrityError: # grab instance of genre instead
-                        genre = Genre.objects.get(type=genre_type)
-                    game.genres.add(genre)
-                for theme_type in game_info['themes']:
-                    try:
-                        theme = Theme.objects.create(type=theme_type)
-                    except django.db.IntegrityError: # grab instance of genre instead
-                        theme = Theme.objects.get(type=theme_type)
-                    game.themes.add(theme)
-                for platform_device in game_info['platforms']:
-                    try:
-                        platform = Platform.objects.create(device=platform_device)
-                    except django.db.IntegrityError: # grab instance of genre instead
-                        platform = Platform.objects.get(device=platform_device)
-                    game.platforms.add(platform)
-                game.save()
-                # alternatively could grab list of all game_id, genres, and themes but not sure if using try/except is just faster than searching through N instances
-            except django.db.IntegrityError: # grab instance of game instead
-                game = Game.objects.get(game_id=game_info['game_id'])
+                game = Game.objects.create(game_id=game_id)
+            except IntegrityError: # grab instance of game instead
+                game = Game.objects.get(game_id=game_id)
             batch_games.append(game)
         if len(batch_games) == 1: batch_games = batch_games[0] # backwards compatibility for when this was set up as single game search only
         return batch_games
