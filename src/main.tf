@@ -137,7 +137,12 @@ resource "aws_instance" "default" {
 
               # Run the Docker container
               docker run -d -p 80:8080 \
+              --env DEBUG=False \
               --env SECRET_KEY='${var.secret_key}' \
+              --env DB_NAME='${aws_db_instance.default.db_name}' \
+              --env DB_USER='${aws_db_instance.default.username}' \
+              --env DB_PW='${aws_db_instance.default.password}' \
+              --env DB_HOST='${aws_db_instance.default.endpoint}' \
               251622685697.dkr.ecr.us-west-2.amazonaws.com/gamer_journey:latest
               EOF
   tags = {
