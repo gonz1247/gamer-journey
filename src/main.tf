@@ -108,6 +108,28 @@ variable "secret_key" {
   type        = string
   sensitive   = true
 }
+# Create admin email variables 
+variable "admin_email" {
+  description = "Admin email"
+  type        = string
+  sensitive   = false
+}
+variable "admin_email_pw" {
+  description = "Admin email password"
+  type        = string
+  sensitive   = true
+}
+# Create IGDB API credentials variables
+variable "igdb_client_id" {
+  description = "IGDB API client ID"
+  type        = string
+  sensitive   = true
+}
+variable "igdb_client_secret" {
+  description = "IGDB API client secret"
+  type        = string
+  sensitive   = true
+}
 
 # EC2 instance to host the Django application
 resource "aws_instance" "default" {
@@ -142,7 +164,11 @@ resource "aws_instance" "default" {
               --env DB_NAME='${aws_db_instance.default.db_name}' \
               --env DB_USER='${aws_db_instance.default.username}' \
               --env DB_PW='${aws_db_instance.default.password}' \
-              --env DB_HOST='${aws_db_instance.default.endpoint}' \
+              --env DB_HOST='${aws_db_instance.default.address}' \
+              --env ADMIN_EMAIL='${var.admin_email}' \
+              --env ADMIN_EMAIL_PW='${var.admin_email_pw}' \
+              --env IGDB_CLIENT_ID='${var.igdb_client_id}' \
+              --env IGDB_CLIENT_SECRET='${var.igdb_client_secret}' \
               251622685697.dkr.ecr.us-west-2.amazonaws.com/gamer_journey:latest
               EOF
   tags = {
