@@ -16,6 +16,6 @@ COPY . /gamer_journey
 RUN python -m pip install -r requirements.txt
 
 # Run the application
-CMD ["/bin/bash", "-c", "gunicorn gamer_journey.wsgi:application --bind 0.0.0.0:$PORT"]
-# CMD gunicorn gamer_journey.wsgi:application --bind 0.0.0.0:${PORT}
+RUN chmod 755 docker-entry.sh
+CMD ["./docker-entry.sh"]
 EXPOSE ${PORT}
