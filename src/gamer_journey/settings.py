@@ -31,6 +31,7 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "*"]
 
 CSRF_TRUSTED_ORIGINS = ["http://gamer-journey.com", "https://www.gamer-journey.com"]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 # Application definition
