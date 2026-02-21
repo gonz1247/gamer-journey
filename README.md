@@ -45,5 +45,4 @@ information that I am able to query from the IGDB database and therefore unneces
 
 ## Future Work
 
-At this time I don't have any plans to expand gamer-journey nor switch to a paid tier of Render so that web
-app can truly be live.
+At this time I don't have any plans to expand gamer-journey.
