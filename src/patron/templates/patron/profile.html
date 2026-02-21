@@ -37,7 +37,6 @@
             <summary>Gaming Stats</summary>
             <fieldset>
                 {% if most_recent_game != 'N/A' %}
-                {% if most_recent_game != 'N/A' %}
                 <p>
                     Most Recent Game: {{ most_recent_game.title }}
                     <br>
@@ -54,8 +53,6 @@
                 </p>
                 {% endif %}
                 {% if longest_game != 'N/A' %}
-                {% endif %}
-                {% if longest_game != 'N/A' %}
                 <p>
                     Game With Most Hours In: {{ longest_game.title }}
                     <br>
@@ -63,15 +60,10 @@
                 </p>
                 {% endif %}
                 {% if fav_genre != 'N/A' %}
-                {% endif %}
-                {% if fav_genre != 'N/A' %}
                 <p>Favorite Genre: {{ fav_genre }}</p>
                 {% endif %}
                 {% if fav_theme != 'N/A' %}
-                {% endif %}
-                {% if fav_theme != 'N/A' %}
                 <p>Favorite Theme In Games: {{ fav_theme }}</p>
-                {% endif %}
                 {% endif %}
             </fieldset>
         </details>
