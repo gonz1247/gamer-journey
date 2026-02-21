@@ -26,13 +26,13 @@ information that I am able to query from the IGDB database and therefore unneces
 
 - Clone repository to your local machine
   - Install required dependencies using the `requirements.txt` document
-    - `python -m pip install -r ./src/requirements.txt`
+    - `python -m pip install -r requirements.txt`
   - Follow the [IGDB instructions](https://api-docs.igdb.com/#account-creation) for obtaining a `Client ID` and
     `Client Secret` for the required API
   - Create `terraform.tfvars` file and populate add `igdb_client_id`, `igdb_client_secret`, `admin_email`, and `admin_email_pw` (see `terraform.tfvars.example`)
     - Likely need to setup an [application password](https://support.google.com/accounts/answer/185833?hl=en) to use smtp through gmail (or other service)
     - Note that `terraform.tfvars` is in `.gitignore` since it will contain sensitive information
-  - Working within the `src` directory, migrate changes for the project
+  - Migrate changes for the project
     - `python manage.py migrate`
   - Create a superuser if needed
     - `python manage.py createsuperuser` and input requested info
