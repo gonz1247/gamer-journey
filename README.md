@@ -44,4 +44,5 @@ information that I am able to query from the IGDB database and therefore unneces
 
 ## Future Work
 
-At this time I don't have any plans to expand gamer-journey.
+The creation of this web-app was done as a learning exercise for myself so no future work is currently planned. Please
+visit [https://gamer-journey.com/](https://gamer-journey.com/) to see the final live version.
