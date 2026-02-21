@@ -29,10 +29,9 @@ information that I am able to query from the IGDB database and therefore unneces
     - `python -m pip install -r ./src/requirements.txt`
   - Follow the [IGDB instructions](https://api-docs.igdb.com/#account-creation) for obtaining a `Client ID` and
     `Client Secret` for the required API
-  - Set environment variables: `igdb_client_id`, `igdb_client_secret`, `admin_email`, and `admin_email_pw`
-    - See `terraform.tfvars.example` to see expected values for each variable
-    - If likely need to setup an [application password](https://support.google.com/accounts/answer/185833?hl=en) to use smtp through gmail (or other service)
-    - Alernatively, can setup a `.env` file to pull variables into project (changes will need to be made for this though)
+  - Create `terraform.tfvars` file and populate add `igdb_client_id`, `igdb_client_secret`, `admin_email`, and `admin_email_pw` (see `terraform.tfvars.example`)
+    - Likely need to setup an [application password](https://support.google.com/accounts/answer/185833?hl=en) to use smtp through gmail (or other service)
+    - Note that `terraform.tfvars` is in `.gitignore` since it will contain sensitive information
   - Working within the `src` directory, migrate changes for the project
     - `python manage.py migrate`
   - Create a superuser if needed

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +32,14 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", "*"]
 
 CSRF_TRUSTED_ORIGINS = ["http://gamer-journey.com", "https://www.gamer-journey.com"]
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Inject environment variables for local development
+if DEBUG:
+    dotenv.load_dotenv("terraform.tfvars")
+    os.environ["IGDB_CLIENT_ID"] = os.environ.get("igdb_client_id")
+    os.environ["IGDB_CLIENT_SECRET"] = os.environ.get("igdb_client_secret")
+    os.environ["ADMIN_EMAIL"] = os.environ.get("admin_email")
+    os.environ["ADMIN_EMAIL_PW"] = os.environ.get("admin_email_pw")
 
 
 # Application definition
@@ -154,6 +162,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get("ADMIN_EMAIL", "default@email.com")
-EMAIL_HOST_PASSWORD = os.environ.get("ADMIN_EMAIL_PW", "defaultpassword")
+EMAIL_HOST_USER = os.environ.get("ADMIN_EMAIL")
+EMAIL_HOST_PASSWORD = os.environ.get("ADMIN_EMAIL_PW")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
