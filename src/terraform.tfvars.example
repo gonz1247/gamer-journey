@@ -1,0 +1,9 @@
+# Needed always (local development and production)
+igdb_client_id      = "<api-client-id>"
+igdb_client_secret  = "<api-client-secret>"
+admin_email         = "<admin@email_service.com>"
+admin_email_pw      = "<admin-email-app-password>"
+# Needed for production only
+secret_key          = "<your-secret-key>"
+db_username         = "<your-db-admin>"
+db_password         = "<secure-db-password>"
